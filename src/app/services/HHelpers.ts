@@ -70,7 +70,12 @@ export class HHelpers {
 
         localStorage.setItem(name, value);
           //this._collectionObserver.next("true");
-          this.bSubject.next(true);
+          console.log(this.bSubject.value + "bSubject!!");
+if(!this.bSubject.value)
+{this.bSubject.next(true);}
+
+
+         
 
         
 
@@ -85,6 +90,7 @@ export class HHelpers {
 
         localStorage.removeItem(name);
        //  this._collectionObserver.next(false);
+       if(this.bSubject.value)
          this.bSubject.next(false);
 
     }

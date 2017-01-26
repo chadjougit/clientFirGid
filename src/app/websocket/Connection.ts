@@ -1,5 +1,6 @@
 import { InvocationDescriptor } from './InvocationDescriptor'
 import { Message, MessageType } from './Message'
+import { Observable } from 'rxjs';
 
 export class Connection {
 
@@ -16,6 +17,8 @@ export class Connection {
     constructor(url: string, enableLogging: boolean=false) {
         this.url = url;
         
+        this.socket != null
+
         this.enableLogging = enableLogging;
 
         this.connectionMethods['onConnected'] = () => {
@@ -37,7 +40,22 @@ export class Connection {
         }
     }
 
-    public start() {
+ public stop()
+ {
+
+if(this.socket != null)
+{this.socket.onclose = (event: CloseEvent) => {
+            this.connectionMethods['onDisconnected'].apply(this);
+        }
+
+this.socket = null;}
+
+
+
+ }
+
+
+    public start(): Observable<string> {
         this.socket = new WebSocket(this.url);
 
         this.socket.onopen = (event: MessageEvent) => {
@@ -74,6 +92,8 @@ export class Connection {
                 console.log('Error data: ' + event.error);
             }
         }
+
+        return Observable.of(this.connectionId); 
     }
 
     public invoke(methodName: string, ...args: any[]) {

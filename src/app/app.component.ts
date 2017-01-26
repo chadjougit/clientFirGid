@@ -96,7 +96,7 @@ this.connection.enableLogging = true;
               
             };
 
-                       this.connection.start();
+                   //    this.connection.start();
 
 
 //
@@ -109,6 +109,23 @@ HHelpers.bSubject.subscribe((value) => {
                                           // ^ This would not happen 
                                           // for a generic observable 
                                           // or generic subject by default
+
+if (value == true)
+{ console.log("yeeeeeah!")
+
+this.connection.start().subscribe((value) => console.log("subscriiiber " + value));
+console.log("?????");
+ }
+else
+{console.log("nooo!") 
+
+if (this.connection != undefined)
+{this.connection.stop();}
+
+this.currentConnetcionId = null;
+
+}
+
 });
 
 this.differ = differs.find({}).create(null);
@@ -186,6 +203,8 @@ let disposeMe = BehaviourSubject.subscribe( data => {
     this.authenticationService.signout();
    //  this.authenticationService.getAm().unsubscribe();
    // this.authenticationService.getAm().unsubscribe();
+
+
    this.router.navigate(["Home"]);
    }
 

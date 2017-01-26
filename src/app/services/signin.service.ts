@@ -47,6 +47,11 @@ this.userData = store.select("UserDataReducer");
                 this.authenticationService.scheduleRefresh();
                 console.log("signin dooone");
 
+                
+
+
+//Эту часть убрал, так как эта штука долбилась в бд слишком часто. Переделываю на то, чтоб долбилась по хабу
+/*
               this.getAmountSubscriber =  this.authenticationService.getAm()
                     .subscribe(
                     (res) => {
@@ -57,15 +62,8 @@ console.log("VLLLADDDDDD");
                     if (res != ""){
                           this.store.dispatch(new UpdateAmount(parseInt(res.json())));
                           }
-
-
-                        /*
-                        this.transaction = res[0];
-                        console.log(res[2]);
-                        console.log(res);
-                        */
-
                     });
+                    */
                      
 
 
