@@ -1,3 +1,4 @@
+
 import { isBoolean } from 'util';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { Component, DoCheck, OnChanges, SimpleChanges, KeyValueDiffers  } from '@angular/core';
@@ -12,6 +13,7 @@ import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import { State } from './reducers/reducers';
 import { HHelpers } from './services/HHelpers';
+import { Connection } from './websocket/Connection';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -59,7 +61,47 @@ ngOnChanges() {
 differ: any;
  BehaviourSubject3 = new BehaviorSubject(this.signedIn);
 
+
+ connection: any;
+
+ currentConnetcionId: any;
+
   constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router, public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
+
+
+
+//websocket hub
+
+this.connection = new Connection("ws://localhost:5000/test");
+
+this.connection.enableLogging = true;
+
+      this.connection.connectionMethods.onConnected = () => {
+                //optional
+                console.log("You are now connected! Connection ID: " + this.connection.connectionId);
+
+                this.currentConnetcionId = this.connection.connectionId;
+            }
+
+            this.connection.connectionMethods.onDisconnected = () => {
+                //optional
+                console.log("Disconnected!");
+                 this.currentConnetcionId = "";
+            }
+
+            this.connection.clientMethods["receiveMessage"] = (socketId, message) => {
+                var messageText = socketId + " said: " + message;
+               
+                console.log(messageText);
+              
+            };
+
+                       this.connection.start();
+
+
+//
+
+
 
 
 HHelpers.bSubject.subscribe((value) => {
