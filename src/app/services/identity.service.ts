@@ -125,6 +125,65 @@ import { AuthHttp } from 'angular2-jwt';
     }
 
 
+
+
+
+    public FindByName2(username: string, summ: number): Observable<any> {
+
+     let    summy: string = summ.toString();
+
+             let colors: string[] = [username, summy];
+
+        let body: any = JSON.stringify(colors);
+
+
+
+        // Sends an authenticated request.
+        return this.authHttp.post("http://localhost:5000/api/identity/FindByName", body, this.options)
+            .map((res: Response) => {
+
+                return res.json();
+
+            })
+            .catch((error: any) => {
+
+                // Error on post request.
+                return Observable.throw(error);
+
+            });
+
+    }
+
+
+
+
+
+
+
+ public GetCurrentUserData(Websocketid: string): Observable<any> {
+
+  let body: any = JSON.stringify(Websocketid);
+        // Sends an authenticated request.
+        return this.authHttp.post("http://localhost:5000/api/identity/GetCurrentUserData", body, this.options)
+            .map((res: Response) => {
+                  
+                return res.json();
+
+            })
+            .catch((error: any) => {
+
+                // Error on get request.
+                return Observable.throw(error);
+
+            });
+
+    }
+
+
+
+
+
+
     
 
         public GetAllUsers(): Observable<any> {

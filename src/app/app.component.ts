@@ -113,7 +113,10 @@ HHelpers.bSubject.subscribe((value) => {
 if (value == true)
 { console.log("yeeeeeah!")
 
-this.connection.start().subscribe((value) => console.log("subscriiiber " + value));
+this.connection.start().subscribe((connectionvalue) => {console.log("subscriiiber " + connectionvalue);
+this.identity.GetCurrentUserData(connectionvalue).subscribe((data) => console.log("GetCurrentUserData " + data));
+}
+);
 console.log("?????");
  }
 else
@@ -122,7 +125,7 @@ else
 if (this.connection != undefined)
 {this.connection.stop();}
 
-this.currentConnetcionId = null;
+//this.currentConnetcionId = "empty";
 
 }
 
