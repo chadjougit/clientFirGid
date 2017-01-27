@@ -2,6 +2,8 @@ import { InvocationDescriptor } from './InvocationDescriptor'
 import { Message, MessageType } from './Message'
 import { Observable } from 'rxjs';
 
+
+
 export class Connection {
 
     public url: string;
@@ -13,6 +15,8 @@ export class Connection {
 
     public clientMethods: { [s: string]: Function; } = {};
     public connectionMethods: { [s: string]: Function; } = {};
+
+    
 
     constructor(url: string, enableLogging: boolean=false) {
         this.url = url;
@@ -92,6 +96,7 @@ this.socket.close(); }
             else if (this.message.messageType == MessageType.ConnectionEvent) {
                 this.connectionId = this.message.data;
                 this.connectionMethods['onConnected'].apply(this);
+              //  this.store.dispatch(new UpdateWebsocketId(this.connectionId));
             }
         }
 

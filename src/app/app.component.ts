@@ -79,7 +79,7 @@ this.connection.enableLogging = true;
       this.connection.connectionMethods.onConnected = () => {
                 //optional
                 console.log("You are now connected! Connection ID: " + this.connection.connectionId);
-
+             this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => console.log("GetCurrentUserData " + data));
                 this.currentConnetcionId = this.connection.connectionId;
             }
 
@@ -114,7 +114,7 @@ if (value == true)
 { console.log("yeeeeeah!")
 
 this.connection.start().subscribe((connectionvalue) => {console.log("subscriiiber " + connectionvalue);
-this.identity.GetCurrentUserData(connectionvalue).subscribe((data) => console.log("GetCurrentUserData " + data));
+//this.identity.GetCurrentUserData(connectionvalue).subscribe((data) => console.log("GetCurrentUserData " + data));
 }
 );
 console.log("?????");
@@ -155,6 +155,8 @@ let disposeMe = BehaviourSubject.subscribe( data => {
       data => {
         // Set the products Array
         this.userData.amount = data.amount;
+        this.userData.websocketId = data.websocketId;
+      
         
       })
       

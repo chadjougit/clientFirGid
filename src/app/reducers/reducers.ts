@@ -6,7 +6,8 @@ import { transition } from '@angular/core';
 export const ActionTypes = {
     UpdateAmount: '[UserData] UpdateAmount',
     UpdateHistory: '[UserData] UpdateHistory',
-    AddNewTransaction: '[UserData] AddNewTransaction'
+    AddNewTransaction: '[UserData] AddNewTransaction',
+    UpdateWebsocketId: '[UserData] UpdateWebsocketId'
 
 };
 
@@ -28,10 +29,17 @@ export class AddNewTransaction implements Action {
     constructor(public payload?: transaction) { }
 }
 
+export class UpdateWebsocketId implements Action {
+    public type = ActionTypes.UpdateWebsocketId;
+
+    constructor(public payload: string) { }
+}
+
 export type Actions
     = UpdateAmount
     | UpdateHistory
     | AddNewTransaction
+    | UpdateWebsocketId
 
 
 interface data {
@@ -57,6 +65,7 @@ export interface State {
     amount: number;
     transactions: transaction[];
     newTranscation: transaction;
+    websocketId: string;
 
 }
 
@@ -66,7 +75,8 @@ const initialState: State = {
 
     transactions: null,
 
-    newTranscation: {Id : 0, amount : 0, SenderUsername: "teesst@mail.com", RecipientUsername: "teeeeesting@mail.com", Date: "date"}
+    websocketId: null,
+    newTranscation: { Id: 0, amount: 0, SenderUsername: "teesst@mail.com", RecipientUsername: "teeeeesting@mail.com", Date: "date" }
 
 
 
@@ -79,9 +89,9 @@ export function UserDataReducer(state: State = initialState, action: Actions) {
             var amount2 = action.payload;
 
 
-           return Object.assign({}, state, { amount: amount2 });
+            return Object.assign({}, state, { amount: amount2 });
 
-          //   return state.amount = parseInt(amount2);
+            //   return state.amount = parseInt(amount2);
 
         }
 
@@ -89,8 +99,12 @@ export function UserDataReducer(state: State = initialState, action: Actions) {
             return Object.assign({}, state, { transactions: action.payload });
         }
 
-          case ActionTypes.AddNewTransaction: {
+        case ActionTypes.AddNewTransaction: {
             return Object.assign({}, state, { newTranscation: action.payload });
+        }
+
+        case ActionTypes.UpdateWebsocketId: {
+            return Object.assign({}, state, { websocketId: action.payload });
         }
 
 
