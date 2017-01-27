@@ -44,11 +44,23 @@ export class Connection {
  {
 
 if(this.socket != null)
-{this.socket.onclose = (event: CloseEvent) => {
+{
+  /*    
+    this.socket.onclose = (event: CloseEvent) => {
             this.connectionMethods['onDisconnected'].apply(this);
-        }
 
-this.socket = null;}
+
+          this.connectionMethods['onDisconnected'] = () => {
+            if(this.enableLogging) {
+                console.log('Connection closed from: ' + this.url);
+            }
+        }
+        
+
+            
+        }
+*/
+this.socket.close(); }
 
 
 
