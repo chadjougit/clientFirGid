@@ -216,13 +216,18 @@ testTake(){this.userData.take(1).subscribe(content => {
 
 this.userData.take(1).subscribe(content => {
 
-if (content.amount - summ <0)
-{console.log("маааало");
-alert("need more");
+
+
+//потом поправить!!!!!
+//if (content.amount - summ <0)
+if (false)
+{ //console.log("маааало");
+//alert("need more");
 }
+/*
 else if (summ < 0)
 {alert("wrong summ!");}
-
+*/
 else
 {console.log("ноооорм");
 

@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { State } from './reducers/reducers';
+import { State, UpdateHistory, UpdateAmount } from './reducers/reducers';
 import { HHelpers } from './services/HHelpers';
 import { Connection } from './websocket/Connection';
 @Component({
@@ -20,6 +20,9 @@ import { Connection } from './websocket/Connection';
   styleUrls: ['./app.component.css']
 })
 //implements DoCheck 
+
+//global changes!
+
 export class AppComponent  {
   title = 'app works!';
   complexForm: FormGroup;
@@ -66,6 +69,8 @@ differ: any;
 
  currentConnetcionId: any;
 
+parsedata: any;
+
   constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router, public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
 
 
@@ -79,7 +84,16 @@ this.connection.enableLogging = true;
       this.connection.connectionMethods.onConnected = () => {
                 //optional
                 console.log("You are now connected! Connection ID: " + this.connection.connectionId);
-             this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => console.log("GetCurrentUserData " + data));
+
+    console.log("let's invoke getcurrentuserdata");
+                       this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) =>
+              {console.log("GetCurrentUserData " + data);
+
+              this.parsedata = JSON.parse(data);
+
+              this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
+              this.store.dispatch(new UpdateAmount(this.parsedata.UserTransactions));
+              console.log(this.parsedata);});
                 this.currentConnetcionId = this.connection.connectionId;
             }
 
@@ -92,6 +106,24 @@ this.connection.enableLogging = true;
             this.connection.clientMethods["receiveMessage"] = (socketId, message) => {
                 var messageText = socketId + " said: " + message;
                
+                if(socketId == "booooong! MANY COOOOME")
+                {
+                       
+                       console.log("let's invoke getcurrentuserdata");
+                       this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) =>
+              {console.log("GetCurrentUserData " + data);
+
+              this.parsedata = JSON.parse(data);
+
+              this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
+              this.store.dispatch(new UpdateAmount(this.parsedata.UserTransactions));
+              console.log(this.parsedata);});
+
+                       
+
+                }
+console.log(socketId);
+console.log(message);
                 console.log(messageText);
               
             };
