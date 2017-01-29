@@ -19,21 +19,16 @@ import { Connection } from './websocket/Connection';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-//implements DoCheck 
+
 
 //global changes!
 
 export class AppComponent {
   title = 'app works!';
   complexForm: FormGroup;
-  // userData: Observable<any>;
+  
   userData: any;
-
-
   connection: any;
-
-  currentConnetcionId: any;
-
   parsedata: any;
 
   constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router, public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
@@ -42,11 +37,10 @@ export class AppComponent {
     //websocket hub
 
     this.connection = new Connection("ws://localhost:5000/test");
-
     this.connection.enableLogging = true;
 
     this.connection.connectionMethods.onConnected = () => {
-      //optional
+
       console.log("You are now connected! Connection ID: " + this.connection.connectionId);
 
       console.log("let's invoke getcurrentuserdata");
@@ -55,17 +49,18 @@ export class AppComponent {
 
         this.parsedata = JSON.parse(data);
 
+
+        //добавляем полученные данные в стор
         this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
         this.store.dispatch(new UpdateAmount(this.parsedata.UserPw));
         console.log(this.parsedata);
       });
-      this.currentConnetcionId = this.connection.connectionId;
     }
 
     this.connection.connectionMethods.onDisconnected = () => {
       //optional
       console.log("Disconnected!");
-      this.currentConnetcionId = "";
+      //здесь что-то на случай того, если у нас будет выключен connect
     }
 
     this.connection.clientMethods["receiveMessage"] = (socketId, message) => {
@@ -87,31 +82,22 @@ export class AppComponent {
       console.log(socketId);
       console.log(message);
       console.log(messageText);
-//
+      //
     };
 
     HHelpers.bSubject.subscribe((value) => {
       console.log("Subscription got", value);
 
       if (value == true) {
-        console.log("yeeeeeah!")
-
         this.connection.start().subscribe((connectionvalue) => {
           console.log("subscriiiber " + connectionvalue);
-        }
-        );
-        console.log("?????");
+        });
       }
       else {
         console.log("nooo!")
-
         if (this.connection != undefined)
         { this.connection.stop(); }
-
-    
-
       }
-
     });
 
     this.userData = store.select("UserDataReducer");
