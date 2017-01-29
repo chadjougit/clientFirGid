@@ -50,15 +50,6 @@ export type Actions
     | Def
 
 
-interface data {
-
-
-
-    message: string;
-
-
-}
-
 interface transaction {
     Id: number;
     amount: number;
@@ -80,26 +71,18 @@ export interface State {
 const initialState: State = {
 
     amount: null,
-
     transactions: null,
-
     websocketId: null,
     newTranscation: { Id: 0, amount: 0, SenderUsername: "teesst@mail.com", RecipientUsername: "teeeeesting@mail.com", Date: "date" }
-
-
 
 };
 
 export function UserDataReducer(state: State = initialState, action: Actions) {
-    //  export  const reducer: ActionReducer<State[]> = (state: State[] = initialState, action: Actions) => {
     switch (action.type) {
         case ActionTypes.UpdateAmount: {
             var amount2 = action.payload;
 
-
             return Object.assign({}, state, { amount: amount2 });
-
-            //   return state.amount = parseInt(amount2);
 
         }
 
@@ -108,9 +91,10 @@ export function UserDataReducer(state: State = initialState, action: Actions) {
         }
 
         case ActionTypes.AddNewTransaction: {
-             let test :transaction  = action.payload;
-             test.amount = test.amount *-1;
-            return Object.assign({}, state, { newTranscation: action.payload });
+          
+            //к примеру, в transaction не должно придти отрицательное число
+            action.payload.Amount = action.payload.Amount * -1;
+            return Object.assign({}, state, { newTranscation: action.payload  });
         }
 
         case ActionTypes.UpdateWebsocketId: {
