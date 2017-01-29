@@ -29,16 +29,6 @@ export class AppComponent {
   // userData: Observable<any>;
   userData: any;
 
-  BehaviorSubject2: any;
-
-
-  deletethisvalue: any;
-
-
-
-  differ: any;
-  BehaviourSubject3 = new BehaviorSubject(this.signedIn);
-
 
   connection: any;
 
@@ -47,7 +37,6 @@ export class AppComponent {
   parsedata: any;
 
   constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router, public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
-
 
 
     //websocket hub
@@ -94,23 +83,12 @@ export class AppComponent {
           this.store.dispatch(new UpdateAmount(this.parsedata.UserTransactions));
           console.log(this.parsedata);
         });
-
-
-
       }
       console.log(socketId);
       console.log(message);
       console.log(messageText);
-
+//
     };
-
-    //    this.connection.start();
-
-
-    //
-
-
-
 
     HHelpers.bSubject.subscribe((value) => {
       console.log("Subscription got", value);
@@ -130,24 +108,13 @@ export class AppComponent {
         if (this.connection != undefined)
         { this.connection.stop(); }
 
-        //this.currentConnetcionId = "empty";
+    
 
       }
 
     });
 
-    this.differ = differs.find({}).create(null);
-    this.BehaviourSubject3.subscribe(data => this.deletethisvalue = data)
-
-
     this.userData = store.select("UserDataReducer");
-
-    //let BehaviourSubject = new BehaviorSubject(tokenNotExpired);
-
-    let BehaviorSubject2 = new BehaviorSubject(this.signedIn);
-
-    this.deletethisvalue = false;
-
 
     this.userData.subscribe(
       data => {
@@ -195,11 +162,6 @@ export class AppComponent {
   get signedIn(): boolean {
     return this.HHelpers.tokenNotExpired();
   }
-
-
-
-
-
 }
 
 
