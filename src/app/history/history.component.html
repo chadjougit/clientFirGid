@@ -21,13 +21,13 @@
         </th>
         </tr>
       </thead>
-      <tbody *ngFor="let trans of this.userDataCopied2 ">
+      <tbody *ngFor="let trans of this.result3 ">
         <tr>
           <td>
             <div [hidden]="!trans"> {{trans?.Id}} </div>
           </td>
           <td>
-            <div [hidden]="!trans"> {{trans?.Amount}} </div>
+            <div [hidden]="!trans"> {{trans?.amount}} </div>
           </td>
           <td>
             <div [hidden]="!trans"> {{trans?.SenderUsername}} </div>
@@ -39,7 +39,7 @@
             <div [hidden]="!trans"> {{trans?.Date | date:'medium' }} </div>
           </td> 
           <td>
-            <div *ngIf="trans.Amount < 0"> <button (click)="SendTransactionId(trans.Id)">SendTransactionId</button> </div>
+            <div *ngIf="trans.amount < 0"> <button (click)="SendTransactionId(trans.Id)">SendTransactionId</button> </div>
             </td>
         </tr>
       </tbody>

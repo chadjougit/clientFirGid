@@ -6,6 +6,7 @@ import { State, UpdateAmount, UpdateHistory, AddNewTransaction } from '../reduce
 
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 
 export interface Transaction {
@@ -41,10 +42,15 @@ export class HistoryComponent implements OnInit {
     userDataCopied: any;
     userDataCopied2: any;
 
+    result3: any;
+
     constructor(public authHttp: AuthHttp, private router: Router, public identity: IdentityService, private store: Store<State>) {
 
  this.userData = this.store.select("UserDataReducer");
 this.GetTransactionsFromReducer(); 
+
+  console.log('today is', moment());
+
 
      }
 
@@ -105,7 +111,7 @@ this.GetTransactionsFromReducer();
 
         //let testvalue = this.transaction.map(trans => {trans.Amount = trans.Amount * -1; return trans});
 
-        let transactionsToSend = this.userData.transactions;
+        let transactionsToSend = this.userDataCopied.transactions;
 
         this.store.dispatch(new AddNewTransaction(transactionsToSend.map(trans => { trans.Amount = trans.Amount * 1; return trans }).find(trans => trans.Id == id)));
          
@@ -196,12 +202,45 @@ var Dates:string[] = [];
     Dates.push(newtran2);
 }
 
+
+var Dates2:any = [];
+    for (let entry of  this.userDataCopied.transactions) {
+                   
+            let newtran3 = {Id: entry.Id, amount : entry.Amount,  SenderUsername: entry.SenderUsername, RecipientUsername: entry.RecipientUsername,  Date: new Date(Date.parse(entry.Date)) };  
+    
+          
+    Dates2.push(newtran3);
+}
+
+
+ this.result3 = Dates2.sort(function(a,b){
+   return (Date.parse(b.Date) - Date.parse(a.Date)) || 0;
+});
+/*
+
 Dates = Dates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 
 this.userDataCopied2 = JSON.parse(JSON.stringify(this.userDataCopied.transactions));
 
+
+var result = this.userDataCopied2.sort(function(a,b){
+   return (Date.parse(b.date) - Date.parse(a.date)) || 0;
+});
+
+console.log("testing");
+
 this.userDataCopied2 = this.userDataCopied2.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 this.userDataCopied2 = this.userDataCopied2.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+
+*/
+
+
+
+
+
+
+
+
 //this.userDataCopied2 =  this.userDataCopied.transactions.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 
 /*
