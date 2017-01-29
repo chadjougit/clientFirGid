@@ -19,7 +19,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a  *ngIf="signedIn" (click)="Logout()">Logout</a></li>
         <form class="navbar-form">     
-         <form  *ngIf="!signedIn" [formGroup]="complexForm" (ngSubmit)="click$.next(complexForm.value)">
+         <form  *ngIf="!signedIn" [formGroup]="complexForm" (ngSubmit)="loginSubmitCLick$.next(complexForm.value)">
           <input class="form-control" placeholder="login" type="text" [formControl]="complexForm.controls['login']">
             <input class="form-control" placeholder="password" type="text" [formControl]="complexForm.controls['password']">
         <button class="btn btn-default" type="submit">Submit</button>
@@ -34,29 +34,7 @@
 </nav>
 
 
-<h1>
-  {{title}}
-</h1>
-<button (click)="navigateHome()">navigateHome</button>
-<button (click)="navigateTestLogin()">navigateTestLogin</button>
-<button (click)="navigateTestValues()">navigateTestValues</button>
-<button (click)="navigatesignup()">navigatesignup</button>
-<button (click)="navigateTransaction()">navigateTransaction</button>
-<button (click)="navigateHistory()">navigateHistory</button>
 
-<button (click)="DeleteThisBehSubscriber()">DeleteThisBehSubscriber</button>
-
-{{signedIn}}
-
-{{deletethisvalue}}
-
-
-
-
-tteeeeest
-
-<button (click)="uns()">uns</button>
-
-<button (click)="GetAmount()">GetAmount</button> AMount {{userData.amount}} AMount
+ AMount {{userData.amount}} AMount
 
 <router-outlet></router-outlet>
