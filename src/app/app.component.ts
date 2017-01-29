@@ -287,6 +287,10 @@ let disposeMe = BehaviourSubject.subscribe( data => {
 
   login() {
     this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
+
+      this.complexForm.controls['login'].setValue("");
+
+    this.complexForm.controls['password'].setValue("");
   }
 
  uns(){

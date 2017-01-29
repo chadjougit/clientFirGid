@@ -13,6 +13,7 @@
       <ul class="nav navbar-nav">
         <li *ngIf="signedIn" [routerLink]="['/History']" routerLinkActive="active"><a role="button">History</a></li>
         <li *ngIf="signedIn" [routerLink]="['/Transaction']" routerLinkActive="active"><a role="button">Transaction</a></li>
+         <li *ngIf="!signedIn" [routerLink]="['/Signup']" routerLinkActive="active"><a role="button">Signup</a></li>
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
