@@ -21,7 +21,7 @@
         </th>
         </tr>
       </thead>
-      <tbody *ngFor="let trans of userData.transactions ">
+      <tbody *ngFor="let trans of this.userDataCopied2 ">
         <tr>
           <td>
             <div [hidden]="!trans"> {{trans?.Id}} </div>

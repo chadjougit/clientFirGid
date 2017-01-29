@@ -275,7 +275,9 @@ this.userData.take(1).subscribe(content => {
 
   console.log(content);
 
-   this.complexForm.controls['Amount'].setValue(content.newTranscation.Amount);
+   this.complexForm.controls['recipient'].setValue(content.newTranscation.RecipientUsername);
+
+    this.complexForm.controls['Amount'].setValue(content.newTranscation.Amount);
       
     });
 

@@ -92,7 +92,7 @@ this.connection.enableLogging = true;
               this.parsedata = JSON.parse(data);
 
               this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
-              this.store.dispatch(new UpdateAmount(this.parsedata.UserTransactions));
+              this.store.dispatch(new UpdateAmount(this.parsedata.UserPw));
               console.log(this.parsedata);});
                 this.currentConnetcionId = this.connection.connectionId;
             }
