@@ -144,7 +144,7 @@ export class TransactionComponent implements OnInit {
       else {
         console.log("ноооорм");
 
-        this.identity.FindByName(username, summ)
+        this.identity.SendTransactionToUser(username, summ)
           .subscribe(
           (res: any) => {
 
@@ -153,8 +153,7 @@ export class TransactionComponent implements OnInit {
 
 
               console.log(res.succeeded);
-              // Refreshes the users.
-              // this.getAll();
+          
 
             } else {
 

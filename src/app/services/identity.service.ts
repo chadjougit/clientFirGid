@@ -23,150 +23,14 @@ import { AuthHttp } from 'angular2-jwt';
 
     }
 
-    /**
-     * Gets all users through AuthHttp.
-     */
-    public GetAll(): Observable<any> {
 
-        // Sends an authenticated request.
-        return this.authHttp.get("http://localhost:5000/api/identity/GetAll")
-            .map((res: Response) => {
-                  
-                return res.json();
+    public GetCurrentUserData(Websocketid: string): Observable<any> {
 
-            })
-            .catch((error: any) => {
-
-                // Error on get request.
-                return Observable.throw(error);
-
-            });
-
-    }
-
-/*
-    public GetAmount(): Observable<any> {
-
-        // Sends an authenticated request.
-
-        
-        return this.authHttp.get("http://localhost:5000/api/identity/GetAmount")
-            .map((res: Response) => {
-                  
-                return res.json();
-
-            })
-            .catch((error: any) => {
-
-                // Error on get request.
-                return Observable.throw(error);
-
-            });
-
-    }
-*/
-
-        public GetAmount(): Observable<any> {
-
-
-            
- return Observable
-         .interval(5000)
-         .flatMap(() => this.authHttp.get('http://localhost:5000/api/identity/GetAmount'));
-  
-     }
-
-
-        public GetTransactions(): Observable<any> {
-
-        // Sends an authenticated request.
-        return this.authHttp.get("http://localhost:5000/api/identity/GetTransactions")
-            .map((res: Response) => {
-
-                  console.log(res);
-
-                   console.log("chuuuu");
-
-                  console.log(res.json());
-                return res.json();
-
-            })
-            .catch((error: any) => {
-
-                // Error on get request.
-                return Observable.throw(error);
-
-            });
-
-    }
-
-
-         public GetTime(): Observable<any> {
-
-        // Sends an authenticated request.
-        return this.authHttp.get("http://localhost:5000/api/identity/GetTime")
-            .map((res: Response) => {
-
-                  console.log(res);
-
-                   console.log("chuuuu");
-
-                  console.log(res.json());
-                return res.json();
-
-            })
-            .catch((error: any) => {
-
-                // Error on get request.
-                return Observable.throw(error);
-
-            });
-
-    }
-
-
-
-
-
-    public FindByName2(username: string, summ: number): Observable<any> {
-
-     let    summy: string = summ.toString();
-
-             let colors: string[] = [username, summy];
-
-        let body: any = JSON.stringify(colors);
-
-
-
-        // Sends an authenticated request.
-        return this.authHttp.post("http://localhost:5000/api/identity/FindByName", body, this.options)
-            .map((res: Response) => {
-
-                return res.json();
-
-            })
-            .catch((error: any) => {
-
-                // Error on post request.
-                return Observable.throw(error);
-
-            });
-
-    }
-
-
-
-
-
-
-
- public GetCurrentUserData(Websocketid: string): Observable<any> {
-
-  let body: any = JSON.stringify(Websocketid);
+        let body: any = JSON.stringify(Websocketid);
         // Sends an authenticated request.
         return this.authHttp.post("http://localhost:5000/api/identity/GetCurrentUserData", body, this.options)
             .map((res: Response) => {
-                  
+
                 return res.json();
 
             })
@@ -179,19 +43,12 @@ import { AuthHttp } from 'angular2-jwt';
 
     }
 
-
-
-
-
-
-    
-
-        public GetAllUsers(): Observable<any> {
+    public GetAllUsers(): Observable<any> {
 
         // Sends an authenticated request.
         return this.authHttp.get("http://localhost:5000/api/identity/GetAllUsers")
             .map((res: Response) => {
-                  
+
                 return res.json();
 
             })
@@ -214,9 +71,9 @@ import { AuthHttp } from 'angular2-jwt';
 
         let body: string = JSON.stringify(model);
 
- console.log("body");
+        console.log("body");
         console.log(body);
-         console.log("body2");
+        console.log("body2");
 
         return this.http.post("http://localhost:5000/api/identity/Create", body, this.options)
             .map((res: Response) => {
@@ -261,18 +118,18 @@ import { AuthHttp } from 'angular2-jwt';
 
 
 
-    public FindByName(username: string, summ: number): Observable<any> {
+    public SendTransactionToUser(username: string, summ: number): Observable<any> {
 
-     let    summy: string = summ.toString();
+        let summy: string = summ.toString();
 
-             let colors: string[] = [username, summy];
+        let colors: string[] = [username, summy];
 
         let body: any = JSON.stringify(colors);
 
 
 
         // Sends an authenticated request.
-        return this.authHttp.post("http://localhost:5000/api/identity/FindByName", body, this.options)
+        return this.authHttp.post("http://localhost:5000/api/identity/SendTransactionToUser", body, this.options)
             .map((res: Response) => {
 
                 return res.json();
