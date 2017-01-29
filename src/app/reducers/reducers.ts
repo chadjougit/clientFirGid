@@ -73,7 +73,7 @@ const initialState: State = {
     amount: null,
     transactions: null,
     websocketId: null,
-    newTranscation: { Id: 0, amount: 0, SenderUsername: "teesst@mail.com", RecipientUsername: "teeeeesting@mail.com", Date: "date" }
+    newTranscation: { Id: 0, amount: 0, SenderUsername: "", RecipientUsername: "", Date: "date" }
 
 };
 

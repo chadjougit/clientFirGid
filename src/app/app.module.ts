@@ -6,8 +6,7 @@ import { HttpModule, Http } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { TestLoginComponent } from './test-login/test-login.component';
-import { TestValuesComponent } from './test-values/test-values.component';
+
 
 import { AuthguardService } from './services/authguard.service';
 import { SigninService } from './services/signin.service';
@@ -22,7 +21,7 @@ import { SigninComponent } from './signin/signin.component';
 import { CustomFormsModule } from 'ng2-validation'
 import { TypeaheadModule } from 'ng2-bootstrap/typeahead';
 
-import {StoreModule} from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { UserDataReducer } from './reducers/reducers';
 import { HHelpers } from './services/HHelpers';
 
@@ -30,18 +29,16 @@ import { HHelpers } from './services/HHelpers';
 
 // Set tokenGetter to use the same storage in AuthenticationService.Helpers.
 export function getAuthHttp(http: Http) {
-    return new AuthHttp(new AuthConfig({
-        noJwtError: true,
-        tokenGetter: (() => localStorage.getItem('id_token'))
-    }), http);
+  return new AuthHttp(new AuthConfig({
+    noJwtError: true,
+    tokenGetter: (() => localStorage.getItem('id_token'))
+  }), http);
 }
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    TestLoginComponent,
-    TestValuesComponent,
     HistoryComponent,
     TransactionComponent,
     SignupComponent,
@@ -52,23 +49,22 @@ export function getAuthHttp(http: Http) {
     FormsModule,
     HttpModule,
     routing,
-      CustomFormsModule,
-        ReactiveFormsModule,
-        TypeaheadModule.forRoot(),
-          StoreModule.provideStore( {UserDataReducer: UserDataReducer} )
+    CustomFormsModule,
+    ReactiveFormsModule,
+    TypeaheadModule.forRoot(),
+    StoreModule.provideStore({ UserDataReducer: UserDataReducer })
   ],
   providers: [AuthenticationService,
-  SigninService,
-  AuthguardService,
-  IdentityService,
-  
-  HHelpers,
-  
-   {
-            provide: AuthHttp,
-            useFactory: getAuthHttp,
-            deps: [Http]
-        }],
+    SigninService,
+    AuthguardService,
+    IdentityService,
+    HHelpers,
+
+    {
+      provide: AuthHttp,
+      useFactory: getAuthHttp,
+      deps: [Http]
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

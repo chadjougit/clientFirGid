@@ -24,18 +24,8 @@ export class SigninService {
 
 
 this.userData = store.select("UserDataReducer");
-
-
     }
 
-
- uns(){
-
- this.authenticationService.getAm().unsubscribe;
-
- this.getAmountSubscriber.unsubscribe();
-
- }
 
     signin(username: string, password: string): void {
 
@@ -46,41 +36,6 @@ this.userData = store.select("UserDataReducer");
                 // Optional strategy for refresh token through a scheduler.
                 this.authenticationService.scheduleRefresh();
                 console.log("signin dooone");
-
-                
-
-
-//Эту часть убрал, так как эта штука долбилась в бд слишком часто. Переделываю на то, чтоб долбилась по хабу
-/*
-              this.getAmountSubscriber =  this.authenticationService.getAm()
-                    .subscribe(
-                    (res) => {
-
-console.log("VLLLADDDDDD");
-
-                    //    console.log(res.json());
-                    if (res != ""){
-                          this.store.dispatch(new UpdateAmount(parseInt(res.json())));
-                          }
-                    });
-                    */
-                     
-
-
-
-
-
-                /*
-                                // Gets the redirect URL from authentication service.
-                                // If no redirect has been set, uses the default.
-                                let redirect: string = this.authenticationService.redirectUrl
-                                    ? this.authenticationService.redirectUrl
-                                    : '/home';
-                
-                                // Redirects the user.
-                                this.router.navigate([redirect]);
-                                */
-
             },
             (error: any) => {
 
@@ -106,12 +61,8 @@ console.log("VLLLADDDDDD");
                         error.status ? `${error.status} - ${error.statusText}` : 'Server error';
 
                     console.log(errMsg);
-
                     this.errorMessage = "Server error. Try later.";
-
                 }
-
             });
-
     }
 }

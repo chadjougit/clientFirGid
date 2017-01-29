@@ -21,7 +21,7 @@
         </th>
         </tr>
       </thead>
-      <tbody *ngFor="let trans of this.result3 ">
+      <tbody *ngFor="let trans of this.simpleArray4userData ">
         <tr>
           <td>
             <div [hidden]="!trans"> {{trans?.Id}} </div>
@@ -45,15 +45,6 @@
       </tbody>
     </table>
 
-
-
-
-
-<button (click)="GetTransactions()">GetTransactions</button> {{transaction}} teeest
-
-<button (click)="GetTime()">GetTime</button>
-
-<button (click)="GetTransactionsFromReducer()">GetTransactionsFromReducer</button>
 
 <div class="container">
   <h2>Striped Rows</h2>
@@ -86,4 +77,3 @@
   </table>
 </div>
 
-teeest
