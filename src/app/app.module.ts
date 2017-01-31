@@ -24,6 +24,10 @@ import { TypeaheadModule } from 'ng2-bootstrap/typeahead';
 import { StoreModule } from '@ngrx/store';
 import { UserDataReducer } from './reducers/reducers';
 import { HHelpers } from './services/HHelpers';
+import { CommonModule } from '@angular/common';
+
+import {OrderListModule} from 'primeng/primeng';
+import {GrowlModule} from 'primeng/primeng';
 
 
 
@@ -52,13 +56,17 @@ export function getAuthHttp(http: Http) {
     CustomFormsModule,
     ReactiveFormsModule,
     TypeaheadModule.forRoot(),
-    StoreModule.provideStore({ UserDataReducer: UserDataReducer })
+    StoreModule.provideStore({ UserDataReducer: UserDataReducer }),
+    CommonModule,
+    OrderListModule,
+    GrowlModule
   ],
   providers: [AuthenticationService,
     SigninService,
     AuthguardService,
     IdentityService,
     HHelpers,
+
 
     {
       provide: AuthHttp,

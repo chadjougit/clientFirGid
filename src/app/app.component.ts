@@ -1,4 +1,3 @@
-
 import { isBoolean } from 'util';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { Component, DoCheck, OnChanges, SimpleChanges, KeyValueDiffers } from '@angular/core';
@@ -14,6 +13,8 @@ import { Store } from '@ngrx/store';
 import { State, UpdateHistory, UpdateAmount } from './reducers/reducers';
 import { HHelpers } from './services/HHelpers';
 import { Connection } from './websocket/Connection';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,10 +32,11 @@ export class AppComponent {
   connection: any;
   parsedata: any;
 
-  constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router, public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
+  constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router, 
+  public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
 
-
-    //websocket hub
+ 
+   
 
     this.connection = new Connection("ws://localhost:5000/test");
     this.connection.enableLogging = true;

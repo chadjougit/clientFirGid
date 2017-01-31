@@ -7,13 +7,12 @@ import { CustomValidators } from 'ng2-validation';
 import { TypeaheadModule } from 'ng2-bootstrap/typeahead';
 
 import { TypeaheadMatch } from 'ng2-bootstrap';
-
 import 'rxjs/add/observable/of';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/reducers';
-
 import 'rxjs/add/operator/take'
 
+import {Message} from 'primeng/primeng';
 
 
 @Component({
@@ -22,6 +21,8 @@ import 'rxjs/add/operator/take'
   styleUrls: ['./transaction.component.css']
 })
 export class TransactionComponent implements OnInit {
+
+      msgs: Message[] = [];
 
 
   complexForm: FormGroup;
@@ -68,6 +69,16 @@ export class TransactionComponent implements OnInit {
   /**
    *метод на основе ngbootstrap для заполняемой строки
    */
+
+
+show() {
+    this.msgs.push({severity:'info', summary:'Info Message', detail:'PrimeNG rocks'});
+}
+
+hide() {
+    this.msgs = [];
+}
+
   public getusersAsObservable(token: string): Observable<any> {
     let query = new RegExp(token, 'ig');
 

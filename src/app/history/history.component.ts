@@ -1,4 +1,4 @@
-import { Component, OnInit, transition } from '@angular/core';
+import { Component, OnInit, transition, ViewContainerRef } from '@angular/core';
 import { IdentityService } from '../services/identity.service';
 import { AuthHttp } from 'angular2-jwt';
 import { Store } from '@ngrx/store';
@@ -7,6 +7,8 @@ import { State, UpdateAmount, UpdateHistory, AddNewTransaction } from '../reduce
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 
 export interface Transaction {
@@ -52,6 +54,8 @@ export class HistoryComponent implements OnInit {
         console.log('today is', moment());
 
 
+
+
     }
 
     lastUpdated = new Date();
@@ -59,6 +63,7 @@ export class HistoryComponent implements OnInit {
     ngOnInit() {
 
     }
+
 
 
 
