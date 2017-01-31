@@ -28,6 +28,7 @@ import { CommonModule } from '@angular/common';
 
 import {OrderListModule} from 'primeng/primeng';
 import {GrowlModule} from 'primeng/primeng';
+import {MessagesModule} from 'primeng/primeng';
 
 
 
@@ -59,7 +60,8 @@ export function getAuthHttp(http: Http) {
     StoreModule.provideStore({ UserDataReducer: UserDataReducer }),
     CommonModule,
     OrderListModule,
-    GrowlModule
+    GrowlModule,
+    MessagesModule
   ],
   providers: [AuthenticationService,
     SigninService,

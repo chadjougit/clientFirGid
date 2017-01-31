@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation  } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validator, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -12,17 +12,20 @@ import { Store } from '@ngrx/store';
 import { State } from '../reducers/reducers';
 import 'rxjs/add/operator/take'
 
-import {Message} from 'primeng/primeng';
+import {Message, GrowlModule} from 'primeng/primeng';
+
 
 
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.css']
+  styleUrls: ['./transaction.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class TransactionComponent implements OnInit {
 
       msgs: Message[] = [];
+        msgs2: Message[] = [];
 
 
   complexForm: FormGroup;
@@ -47,6 +50,7 @@ export class TransactionComponent implements OnInit {
   userData: any;
 
   constructor(fb: FormBuilder, public identity: IdentityService, private store: Store<State>) {
+    this.showWarn() 
     this.GetAllUsers();
 
     this.dataSource = Observable.create((observer: any) => {
@@ -71,8 +75,22 @@ export class TransactionComponent implements OnInit {
    */
 
 
-show() {
+showWarn() {
+        this.msgs2 = [];
+        this.msgs2.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
+    }
+
+
+    show2() {
     this.msgs.push({severity:'info', summary:'Info Message', detail:'PrimeNG rocks'});
+}
+
+hide2() {
+    this.msgs = [];
+}
+
+show() {
+    this.msgs.push({severity:'warn', summary:'Info Message', detail:'PrimeNG rocks'});
 }
 
 hide() {
