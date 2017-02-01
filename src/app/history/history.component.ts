@@ -7,7 +7,7 @@ import { State, UpdateAmount, UpdateHistory, AddNewTransaction } from '../reduce
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 
 

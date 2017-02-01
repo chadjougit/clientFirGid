@@ -1,29 +1,23 @@
 <div class="container-fluid">
-     <div class="col-sm-6 col-sm-offset-3">
-  <form [formGroup]="complexForm" (ngSubmit)="click$.next(complexForm.value)">
-    <input formControlName="recipient"
-           [typeahead]="users"
-           (typeaheadOnSelect)="typeaheadOnSelect($event)"
-           [typeaheadOptionsLimit]="7"
-           [typeaheadOptionField]="'name'"
-           [typeaheadMinLength]="0"
-           placeholder="Typeahead inside a form"
-           class="form-control">
-            <input class="form-control" placeholder="Amount" type="text" [formControl]="complexForm.controls['Amount']">
-              <button class="btn btn-primary center-block" type="submit">Submit</button>
-  </form>
+  <div class="col-sm-6 col-sm-offset-3">
+    <form [formGroup]="complexForm" (ngSubmit)="click$.next(complexForm.value)">
+      <input formControlName="recipient" [typeahead]="users" (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeaheadOptionsLimit]="7"
+        [typeaheadOptionField]="'name'" [typeaheadMinLength]="0" placeholder="Typeahead inside a form" class="form-control">
+      <input class="form-control" placeholder="Amount" type="text" [formControl]="complexForm.controls['Amount']">
+      <button class="btn btn-primary center-block" [disabled]="!this.SubmitButton.isActive" type="submit">{{this.SubmitButton.innerText}}</button>
+    </form>
   </div>
-  </div>
- <i class="fa fa-american-sign-language-interpreting fa-5x" aria-hidden="true"> </i>
+</div>
+<i class="fa fa-american-sign-language-interpreting fa-5x" aria-hidden="true"> </i>
 
 
 
 
- <p-growl [value]="msgs"></p-growl>
+<p-growl [value]="msgs"></p-growl>
 
 
- <button type="button" (click)="showWarn()">Show</button>
-<button type="button" (click)="clear()">Hide</button>
-    
-<button type="button" (click)="show()">Show</button>
-<button type="button" (click)="clear()">Hide</button>
+<button type="button" (click)="showWarn()">Show1</button>
+<button type="button" (click)="clear()">Hide1</button>
+
+<button type="button" (click)="show()">Show2</button>
+<button type="button" (click)="hide()">Hide2</button>

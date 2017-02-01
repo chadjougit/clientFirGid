@@ -13,6 +13,9 @@ import { Store } from '@ngrx/store';
 import { State, UpdateHistory, UpdateAmount } from './reducers/reducers';
 import { HHelpers } from './services/HHelpers';
 import { Connection } from './websocket/Connection';
+import { SubmitButton } from './shared/SubmitButton';
+
+
 
 
 @Component({
@@ -27,18 +30,22 @@ import { Connection } from './websocket/Connection';
 export class AppComponent {
   title = 'app works!';
   complexForm: FormGroup;
-  
+
   userData: any;
   connection: any;
   parsedata: any;
 
-  
 
-  constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router, 
-  public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
+  submitText: string;
+  isValid: boolean;
 
- 
-   
+  SubmitButton = new SubmitButton("Submit");
+
+
+  constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router,
+    public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
+
+
 
     this.connection = new Connection("ws://localhost:5000/test");
     this.connection.enableLogging = true;
@@ -135,7 +142,15 @@ export class AppComponent {
     () => console.log('onCompleted'));
 
   login() {
-    this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
+    this.SubmitButton.deactivate();
+   // this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
+
+    this.authenticationService.signin(this.complexForm.value.login, this.complexForm.value.password).subscribe(
+  x => this.SubmitButton.activate(),
+  e => this.SubmitButton.activate());
+
+            
+
 
     //очищаем логин и пароль на форме после входа, чтоб не было видно при выходе
     this.complexForm.controls['login'].setValue("");
