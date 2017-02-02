@@ -24,7 +24,7 @@ import { AuthHttp } from 'angular2-jwt';
     }
 
 
-    public GetCurrentUserData(Websocketid: string): Observable<any> {
+    public GetCurrentUserData(Websocketid?: string): Observable<any> {
 
         let body: any = JSON.stringify(Websocketid);
         // Sends an authenticated request.

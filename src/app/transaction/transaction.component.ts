@@ -9,7 +9,7 @@ import { TypeaheadModule } from 'ng2-bootstrap/typeahead';
 import { TypeaheadMatch } from 'ng2-bootstrap';
 import 'rxjs/add/observable/of';
 import { Store } from '@ngrx/store';
-import { State } from '../reducers/reducers';
+import { State, UpdateHistory, UpdateAmount } from '../reducers/reducers';
 import 'rxjs/add/operator/take'
 
 import { Message, GrowlModule } from 'primeng/primeng';
@@ -42,10 +42,10 @@ export class TransactionComponent implements OnInit {
     // userData: Observable<any>;
     userData: any;
 
-   SubmitButton = new SubmitButton("Submit");
+    SubmitButton = new SubmitButton("Submit");
 
     constructor(fb: FormBuilder, public identity: IdentityService, private store: Store<State>) {
-        this.showWarn()
+       
         this.GetAllUsers();
 
         this.dataSource = Observable.create((observer: any) => {
@@ -66,21 +66,10 @@ export class TransactionComponent implements OnInit {
      *метод на основе ngbootstrap для заполняемой строки
      */
 
-    showWarn() {
-        this.msgs2 = [];
-        this.msgs2.push({ severity: 'warn', summary: 'Warn Message', detail: 'There are unsaved changes' });
-    }
-
-    show2() {
-        this.msgs.push({ severity: 'info', summary: 'Info Message', detail: 'PrimeNG rocks' });
-    }
-
-    hide2() {
-        this.msgs = [];
-    }
+   
 
     show() {
-        this.msgs.push({ severity: 'warn', summary: 'Info Message', detail: 'PrimeNG rocks' });
+        this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
     }
 
     hide() {
@@ -158,12 +147,27 @@ export class TransactionComponent implements OnInit {
                     (res: any) => {
                         // IdentityResult.
                         if (res.succeeded) {
-                          this.SubmitButton.activate()
+                            this.SubmitButton.activate()
                             console.log(res.succeeded);
+
+
+
+
                         } else {
                             console.log(res.errors);
                         }
                         this.SubmitButton.activate()
+                         this.show();
+                            this.identity.GetCurrentUserData().subscribe((data) => {
+                                console.log("GetCurrentUserData " + data);
+
+                                let parsedata = JSON.parse(data);
+
+
+                                //добавляем полученные данные в стор
+                                this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
+                                this.store.dispatch(new UpdateAmount(parsedata.UserPw));
+                            });
                     },
                     (error: any) => {
                         // Error on post request.
@@ -172,6 +176,7 @@ export class TransactionComponent implements OnInit {
 
                         console.log(errMsg);
                         this.SubmitButton.activate()
+                        
                     });
             }
         });
