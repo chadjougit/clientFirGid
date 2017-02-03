@@ -153,7 +153,7 @@ export class AppComponent {
     // this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
 
     this.authenticationService.signin(this.complexForm.value.login, this.complexForm.value.password).subscribe(
-      x => this.SubmitButton.activate(),
+      x => {this.SubmitButton.activate();  this.authenticationService.scheduleRefresh();},
       e => this.SubmitButton.activate());
 
 

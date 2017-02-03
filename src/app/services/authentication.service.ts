@@ -228,7 +228,6 @@ export class AuthenticationService {
             });
 
     }
-
     /**
      * Revokes token.
      */
