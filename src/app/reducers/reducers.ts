@@ -8,7 +8,7 @@ export const ActionTypes = {
     UpdateHistory: '[UserData] UpdateHistory',
     AddNewTransaction: '[UserData] AddNewTransaction',
     UpdateWebsocketId: '[UserData] UpdateWebsocketId',
-    Def: '[UserData] Def'
+    ToDefault: '[UserData] ToDefault'
 
 };
 
@@ -36,10 +36,10 @@ export class UpdateWebsocketId implements Action {
     constructor(public payload: string) { }
 }
 
-export class Def implements Action {
-    public type = ActionTypes.UpdateWebsocketId;
+export class ToDefault implements Action {
+    public type = ActionTypes.ToDefault;
 
-    constructor(public payload: any) { }
+    constructor(public payload: any = "empty") { }
 }
 
 export type Actions
@@ -47,7 +47,7 @@ export type Actions
     | UpdateHistory
     | AddNewTransaction
     | UpdateWebsocketId
-    | Def
+    | ToDefault
 
 
 interface transaction {
@@ -101,6 +101,10 @@ export function UserDataReducer(state: State = initialState, action: Actions) {
             return Object.assign({}, state, { websocketId: action.payload });
         }
 
+        
+        case ActionTypes.ToDefault: {
+            return Object.assign({}, state = initialState );
+        }
 
 
         default:

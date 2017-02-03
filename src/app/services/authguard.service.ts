@@ -27,7 +27,7 @@ export class AuthguardService implements CanActivate {
     this.authenticationService.redirectUrl = url;
 
     // Not signed in so redirects to signin page.
-    this.router.navigate(['/TestLogin']);
+    this.router.navigate(['/Signup']);
 
     return false;
   }

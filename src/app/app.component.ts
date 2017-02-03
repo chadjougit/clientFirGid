@@ -10,10 +10,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import { State, UpdateHistory, UpdateAmount } from './reducers/reducers';
+import { State, UpdateHistory, UpdateAmount, ToDefault } from './reducers/reducers';
 import { HHelpers } from './services/HHelpers';
 import { Connection } from './websocket/Connection';
 import { SubmitButton } from './shared/SubmitButton';
+
+import { Message, GrowlModule } from 'primeng/primeng';
 
 
 
@@ -30,6 +32,8 @@ import { SubmitButton } from './shared/SubmitButton';
 export class AppComponent {
   title = 'app works!';
   complexForm: FormGroup;
+
+  msgs: Message[] = [];
 
   userData: any;
   connection: any;
@@ -87,6 +91,8 @@ export class AppComponent {
 
           this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
           this.store.dispatch(new UpdateAmount(this.parsedata.UserTransactions));
+          this.show()
+
           console.log(this.parsedata);
         });
       }
@@ -108,6 +114,7 @@ export class AppComponent {
         console.log("nooo!")
         if (this.connection != undefined)
         { this.connection.stop(); }
+        this.store.dispatch(new ToDefault());
       }
     });
 
@@ -143,13 +150,13 @@ export class AppComponent {
 
   login() {
     this.SubmitButton.deactivate();
-   // this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
+    // this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
 
     this.authenticationService.signin(this.complexForm.value.login, this.complexForm.value.password).subscribe(
-  x => this.SubmitButton.activate(),
-  e => this.SubmitButton.activate());
+      x => this.SubmitButton.activate(),
+      e => this.SubmitButton.activate());
 
-            
+
 
 
     //очищаем логин и пароль на форме после входа, чтоб не было видно при выходе
@@ -167,6 +174,16 @@ export class AppComponent {
   get signedIn(): boolean {
     return this.HHelpers.tokenNotExpired();
   }
+
+  show() {
+    this.msgs = [];
+    this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
+  }
+
+  hide() {
+    this.msgs = [];
+  }
+
 }
 
 

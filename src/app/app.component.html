@@ -34,7 +34,8 @@
 </nav>
 
 
+<div class="text-center" *ngIf="signedIn"><h3 > Balance: <span class="label label-default">{{userData.amount}}</span></h3> </div>
 
- AMount {{userData.amount}} AMount
 
 <router-outlet></router-outlet>
+<p-growl [value]="msgs"></p-growl>
