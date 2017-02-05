@@ -8,7 +8,7 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/timer';
 import { Config } from '../config';
 import { AuthHttp } from 'angular2-jwt';
-import { HHelpers } from './HHelpers';
+import { Helpers } from './Helpers';
 
 
 
@@ -50,13 +50,7 @@ export class AuthenticationService {
     private options: RequestOptions;
 
 
- //Helpers: any
-
-    constructor(private http: Http, private authHttp: AuthHttp, public HHelpers: HHelpers) {
-
-
- 
-//this.Helpers = HHelpers;
+    constructor(private http: Http, private authHttp: AuthHttp, public Helpers: Helpers) {
 
 
         // On bootstrap or refresh, tries to get users'data.
@@ -149,12 +143,12 @@ export class AuthenticationService {
 
         // If the user is authenticated, uses the token stream
         // provided by angular2-jwt and flatMap the token.
-        if (this.HHelpers.tokenNotExpired()) {
+        if (this.Helpers.tokenNotExpired()) {
 
             let source = this.authHttp.tokenStream.flatMap(
                 (token: string) => {
                     let now: number = new Date().valueOf();
-                    let exp: number = this.HHelpers.getExp();
+                    let exp: number = this.Helpers.getExp();
                     let delay: number = exp - now - this.offsetSeconds * 1000;
 
                     // Uses the delay in a timer to run the refresh at the proper time. 
@@ -191,7 +185,7 @@ export class AuthenticationService {
      */
     public getNewToken(): Observable<any> {
 
-        let refreshToken: string = this.HHelpers.getToken('refresh_token');
+        let refreshToken: string = this.Helpers.getToken('refresh_token');
 
         // Token endpoint & params.
         let tokenEndpoint: string = Config.TOKEN_ENDPOINT;
@@ -233,7 +227,7 @@ export class AuthenticationService {
      */
     public revokeToken(): void {
 
-        let token: string = this.HHelpers.getToken('id_token');
+        let token: string = this.Helpers.getToken('id_token');
 
         if (token != null) {
 
@@ -253,8 +247,8 @@ export class AuthenticationService {
                 .subscribe(
                 () => {
 
-                    this.HHelpers.removeToken('id_token');
-                    this.HHelpers.removeExp();
+                    this.Helpers.removeToken('id_token');
+                    this.Helpers.removeExp();
 
                 });
 
@@ -267,7 +261,7 @@ export class AuthenticationService {
      */
     public revokeRefreshToken(): void {
 
-        let refreshToken: string = this.HHelpers.getToken('refresh_token');
+        let refreshToken: string = this.Helpers.getToken('refresh_token');
 
         if (refreshToken != null) {
 
@@ -287,7 +281,7 @@ export class AuthenticationService {
                 .subscribe(
                 () => {
 
-                    this.HHelpers.removeToken('refresh_token');
+                    this.Helpers.removeToken('refresh_token');
 
                 });
 
@@ -329,9 +323,9 @@ export class AuthenticationService {
      */
     public userInfo() {
 
-        let token: string = this.HHelpers.getToken('id_token');
+        let token: string = this.Helpers.getToken('id_token');
 
-        if (token != null && this.HHelpers.tokenNotExpired()) {
+        if (token != null && this.Helpers.tokenNotExpired()) {
             this.authHttp.get(Config.USERINFO_ENDPOINT)
                 .subscribe(
                 (res: any) => {
@@ -352,17 +346,17 @@ export class AuthenticationService {
 
     public getAm(): any {
 
-        let token: string = this.HHelpers.getToken('id_token');
+        let token: string = this.Helpers.getToken('id_token');
 
-        if (token != null && this.HHelpers.tokenNotExpired()) {
+        if (token != null && this.Helpers.tokenNotExpired()) {
      return Observable
-         .interval(5000).flatMap(x =>  this.HHelpers.getToken('id_token') != null?  this.authHttp.get('http://localhost:5000/api/identity/GetAmount') :  Observable.of('') )
+         .interval(5000).flatMap(x =>  this.Helpers.getToken('id_token') != null?  this.authHttp.get('http://localhost:5000/api/identity/GetAmount') :  Observable.of('') )
         }
 
     }
 
     public fetchModel(): Observable<boolean> {
-  if(!this.HHelpers.tokenNotExpired) {
+  if(!this.Helpers.tokenNotExpired) {
     return new Observable<false>()
   }
   else {
@@ -420,14 +414,14 @@ export class AuthenticationService {
     private store(body: any): void {
 
         // Stores access token to keep user signed in.
-        this.HHelpers.setToken('id_token', body.access_token);
+        this.Helpers.setToken('id_token', body.access_token);
         // Stores refresh token.
-        this.HHelpers.setToken('refresh_token', body.refresh_token);
+        this.Helpers.setToken('refresh_token', body.refresh_token);
 
         // Calculates token expiration.
         this.expiresIn = <number>body.expires_in * 1000; // To milliseconds.
         // Stores token expiration.
-        this.HHelpers.setExp(this.authTime + this.expiresIn);
+        this.Helpers.setExp(this.authTime + this.expiresIn);
 
     }
 

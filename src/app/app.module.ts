@@ -16,14 +16,14 @@ import { IdentityService } from './services/identity.service';
 import { HistoryComponent } from './history/history.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { SignupComponent } from './signup/signup.component';
-import { SigninComponent } from './signin/signin.component';
+
 
 import { CustomFormsModule } from 'ng2-validation'
 import { TypeaheadModule } from 'ng2-bootstrap/typeahead';
 
 import { StoreModule } from '@ngrx/store';
 import { UserDataReducer } from './reducers/reducers';
-import { HHelpers } from './services/HHelpers';
+import { Helpers } from './services/Helpers';
 import { CommonModule } from '@angular/common';
 
 import {OrderListModule} from 'primeng/primeng';
@@ -46,8 +46,7 @@ export function getAuthHttp(http: Http) {
     HomeComponent,
     HistoryComponent,
     TransactionComponent,
-    SignupComponent,
-    SigninComponent
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +66,7 @@ export function getAuthHttp(http: Http) {
     SigninService,
     AuthguardService,
     IdentityService,
-    HHelpers,
+    Helpers,
 
 
     {

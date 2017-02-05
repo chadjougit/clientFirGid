@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { HHelpers } from './HHelpers';
+import { Helpers } from './Helpers';
 
 @Injectable()
 export class AuthguardService implements CanActivate {
@@ -13,11 +13,11 @@ export class AuthguardService implements CanActivate {
    */
 
 
-  constructor(public authenticationService: AuthenticationService, private router: Router, public HHelpers: HHelpers) { }
+  constructor(public authenticationService: AuthenticationService, private router: Router, public Helpers: Helpers) { }
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-    if (this.HHelpers.tokenNotExpired()) {
+    if (this.Helpers.tokenNotExpired()) {
       // Signed in.
       return true;
     }

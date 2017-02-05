@@ -17,7 +17,8 @@ const appRoutes: Routes = [
     { path: 'Home', component: HomeComponent },
     { path: 'History', component: HistoryComponent, canActivate: [AuthguardService] },
     { path: 'Signup', component: SignupComponent },
-    { path: 'Transaction', component: TransactionComponent, canActivate: [AuthguardService] }
+    { path: 'Transaction', component: TransactionComponent, canActivate: [AuthguardService] },
+    { path: '**', component: HomeComponent }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

@@ -11,32 +11,25 @@ import { AuthHttp } from 'angular2-jwt';
 import { BehaviorSubject } from 'rxjs/Rx';
 
 @Injectable()
-export class HHelpers {
+export class Helpers {
 
-
- //public collection$: Observable<any>;
-  public _collectionObserver: any;
-  public _collection: Array<string>;
- public collection$ = new Observable(observer => {
-      this._collectionObserver = observer;
+    //public collection$: Observable<any>;
+    public _collectionObserver: any;
+    public _collection: Array<string>;
+    public collection$ = new Observable(observer => {
+        this._collectionObserver = observer;
     }).share();
 
 
-        public bSubject = new BehaviorSubject(false); 
+     /**
+     * Emit "true" when we set token in localStorage, "false" when we remove
+     */
+    public tokenSubject = new BehaviorSubject(false);
 
     constructor() {
-
-
-        this.bSubject.next(this.tokenNotExpired());
+        this.tokenSubject.next(this.tokenNotExpired());
     }
 
-    
-/*
-        this.collection$ = new Observable(observer => {
-      this._collectionObserver = observer;
-    }).share();
-    }
-    */
 
     /**
      * Gets the token from the storage.
@@ -45,18 +38,17 @@ export class HHelpers {
      * @return The Token
      */
 
-
     tokenNotExpired(): boolean {
 
-    let token: string = this.getToken('id_token');
+        let token: string = this.getToken('id_token');
 
-    return token != null && (this.getExp() > new Date().valueOf());
-}
+        return token != null && (this.getExp() > new Date().valueOf());
+    }
 
     public getToken(name: string): string {
 
         return localStorage.getItem(name);
-        
+
 
     }
 
@@ -69,15 +61,15 @@ export class HHelpers {
     public setToken(name: string, value: string) {
 
         localStorage.setItem(name, value);
-          //this._collectionObserver.next("true");
-          console.log(this.bSubject.value + "bSubject!!");
-if(!this.bSubject.value)
-{this.bSubject.next(true);}
+        //this._collectionObserver.next("true");
+        console.log(this.tokenSubject.value + "tokenSubject!!");
+        if (!this.tokenSubject.value)
+        { this.tokenSubject.next(true); }
 
 
-         
 
-        
+
+
 
     }
 
@@ -86,12 +78,12 @@ if(!this.bSubject.value)
      *
      * @param name Token's name
      */
-    public  removeToken(name: string): void {
+    public removeToken(name: string): void {
 
         localStorage.removeItem(name);
-       //  this._collectionObserver.next(false);
-       if(this.bSubject.value)
-         this.bSubject.next(false);
+        //  this._collectionObserver.next(false);
+        if (this.tokenSubject.value)
+            this.tokenSubject.next(false);
 
     }
 
@@ -100,7 +92,7 @@ if(!this.bSubject.value)
      *
      * @param exp Token expiration in milliseconds
      */
-    public  setExp(exp: number) {
+    public setExp(exp: number) {
 
         localStorage.setItem("exp", exp.toString());
 
@@ -111,7 +103,7 @@ if(!this.bSubject.value)
      *
      * @return Token expiration in milliseconds
      */
-    public  getExp(): number {
+    public getExp(): number {
 
         return parseInt(localStorage.getItem("exp"));
 
@@ -122,7 +114,7 @@ if(!this.bSubject.value)
      *
      * @return Token expiration in milliseconds
      */
-    public  removeExp(): void {
+    public removeExp(): void {
 
         localStorage.removeItem("exp");
 

@@ -11,178 +11,176 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import { State, UpdateHistory, UpdateAmount, ToDefault } from './reducers/reducers';
-import { HHelpers } from './services/HHelpers';
+import { Helpers } from './services/Helpers';
 import { Connection } from './websocket/Connection';
 import { SubmitButton } from './shared/SubmitButton';
 
 import { Message, GrowlModule } from 'primeng/primeng';
 
 
-
-
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 
 
-//global changes!
 
 export class AppComponent {
-  title = 'app works!';
-  complexForm: FormGroup;
+    title = 'app works!';
+    complexForm: FormGroup;
 
-  msgs: Message[] = [];
+    //
+    primengMsgs: Message[] = [];
 
-  userData: any;
-  connection: any;
-  parsedata: any;
-
-
-  submitText: string;
-  isValid: boolean;
-
-  SubmitButton = new SubmitButton("Submit");
-
-
-  constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router,
-    public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public HHelpers: HHelpers, private differs: KeyValueDiffers) {
+    userData: any;
+    connection: any;
+    parsedata: any;
 
 
 
-    this.connection = new Connection("ws://localhost:5000/test");
-    this.connection.enableLogging = true;
-
-    this.connection.connectionMethods.onConnected = () => {
-
-      console.log("You are now connected! Connection ID: " + this.connection.connectionId);
-
-      console.log("let's invoke getcurrentuserdata");
-      this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => {
-        console.log("GetCurrentUserData " + data);
-
-        this.parsedata = JSON.parse(data);
 
 
-        //добавляем полученные данные в стор
-        this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
-        this.store.dispatch(new UpdateAmount(this.parsedata.UserPw));
-        console.log(this.parsedata);
-      });
+    SubmitButton = new SubmitButton("Submit");
+
+
+    constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router,
+        public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public Helpers: Helpers, private differs: KeyValueDiffers) {
+
+
+
+        this.connection = new Connection("ws://localhost:5000/test");
+        this.connection.enableLogging = true;
+
+        this.connection.connectionMethods.onConnected = () => {
+
+            console.log("You are now connected! Connection ID: " + this.connection.connectionId);
+
+            console.log("let's invoke getcurrentuserdata");
+            this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => {
+                console.log("GetCurrentUserData " + data);
+
+                this.parsedata = JSON.parse(data);
+
+
+                //добавляем полученные данные в стор
+                this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
+                this.store.dispatch(new UpdateAmount(this.parsedata.UserPw));
+                console.log(this.parsedata);
+            });
+        }
+
+        this.connection.connectionMethods.onDisconnected = () => {
+            //optional
+            console.log("Disconnected!");
+            //здесь что-то на случай того, если у нас будет выключен connect
+        }
+
+        this.connection.clientMethods["receiveMessage"] = (socketId, message) => {
+            var messageText = socketId + " said: " + message;
+
+            if (socketId == "booooong! MANY COOOOME") {
+
+                console.log("let's invoke getcurrentuserdata");
+                this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => {
+                    console.log("GetCurrentUserData " + data);
+
+                    this.parsedata = JSON.parse(data);
+
+                    this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
+                    this.store.dispatch(new UpdateAmount(this.parsedata.UserTransactions));
+                    this.show()
+
+                    console.log(this.parsedata);
+                });
+            }
+            console.log(socketId);
+            console.log(message);
+            console.log(messageText);
+            //
+        };
+
+        Helpers.tokenSubject.subscribe((value) => {
+            console.log("Subscription got", value);
+
+            if (value == true) {
+                this.connection.start().subscribe((connectionvalue) => {
+                    console.log("subscriiiber " + connectionvalue);
+                });
+            }
+            else {
+                console.log("nooo!")
+                if (this.connection != undefined)
+                { this.connection.stop(); }
+                this.store.dispatch(new ToDefault());
+            }
+        });
+
+        this.userData = store.select("UserDataReducer");
+
+        this.userData.subscribe(
+            data => {
+                // Set the products Array
+                this.userData.amount = data.amount;
+                this.userData.websocketId = data.websocketId;
+            })
+
+        // Optional strategy for refresh token through a scheduler.
+        this.authenticationService.startupTokenRefresh();
+
+
+        this.complexForm = fb.group({
+            'login': ["", Validators.required],
+            'password': ["", Validators.required],
+        })
     }
 
-    this.connection.connectionMethods.onDisconnected = () => {
-      //optional
-      console.log("Disconnected!");
-      //здесь что-то на случай того, если у нас будет выключен connect
-    }
-
-    this.connection.clientMethods["receiveMessage"] = (socketId, message) => {
-      var messageText = socketId + " said: " + message;
-
-      if (socketId == "booooong! MANY COOOOME") {
-
-        console.log("let's invoke getcurrentuserdata");
-        this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => {
-          console.log("GetCurrentUserData " + data);
-
-          this.parsedata = JSON.parse(data);
-
-          this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
-          this.store.dispatch(new UpdateAmount(this.parsedata.UserTransactions));
-          this.show()
-
-          console.log(this.parsedata);
-        });
-      }
-      console.log(socketId);
-      console.log(message);
-      console.log(messageText);
-      //
-    };
-
-    HHelpers.bSubject.subscribe((value) => {
-      console.log("Subscription got", value);
-
-      if (value == true) {
-        this.connection.start().subscribe((connectionvalue) => {
-          console.log("subscriiiber " + connectionvalue);
-        });
-      }
-      else {
-        console.log("nooo!")
-        if (this.connection != undefined)
-        { this.connection.stop(); }
-        this.store.dispatch(new ToDefault());
-      }
+    loginSubmitCLick$: Observable<any> = new Subject().map((value: any) => {
+        console.log('loginSubmitCLick pressed');
+        //console.log(value);
+        this.login();
     });
 
-    this.userData = store.select("UserDataReducer");
+    subscription: any = this.loginSubmitCLick$.subscribe(
+        x => console.log('onNext: %s', JSON.stringify(x)),
+        e => console.log('onError: %s', e),
+        () => console.log('onCompleted'));
 
-    this.userData.subscribe(
-      data => {
-        // Set the products Array
-        this.userData.amount = data.amount;
-        this.userData.websocketId = data.websocketId;
-      })
+    login() {
+        this.SubmitButton.deactivate();
+        // this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
 
-    // Optional strategy for refresh token through a scheduler.
-    this.authenticationService.startupTokenRefresh();
-
-
-    this.complexForm = fb.group({
-      'login': ["admin@gmail.com", Validators.required],
-      'password': ["Admin01*", Validators.required],
-    })
-  }
-
-  loginSubmitCLick$: Observable<any> = new Subject().map((value: any) => {
-    console.log('loginSubmitCLick pressed');
-    //console.log(value);
-    this.login();
-  });
-
-  subscription: any = this.loginSubmitCLick$.subscribe(
-    x => console.log('onNext: %s', JSON.stringify(x)),
-    e => console.log('onError: %s', e),
-    () => console.log('onCompleted'));
-
-  login() {
-    this.SubmitButton.deactivate();
-    // this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
-
-    this.authenticationService.signin(this.complexForm.value.login, this.complexForm.value.password).subscribe(
-      x => {this.SubmitButton.activate();  this.authenticationService.scheduleRefresh();},
-      e => this.SubmitButton.activate());
+        this.authenticationService.signin(this.complexForm.value.login, this.complexForm.value.password).subscribe(
+            x => { this.SubmitButton.activate(); this.authenticationService.scheduleRefresh(); },
+            e => this.SubmitButton.activate());
 
 
 
 
-    //очищаем логин и пароль на форме после входа, чтоб не было видно при выходе
-    this.complexForm.controls['login'].setValue("");
-    this.complexForm.controls['password'].setValue("");
-  }
+        //очищаем логин и пароль на форме после входа, чтоб не было видно при выходе
+        this.complexForm.controls['login'].setValue("");
+        this.complexForm.controls['password'].setValue("");
+    }
 
-  Logout() {
-    this.authenticationService.signout();
-    this.router.navigate(["Home"]);
-  }
+    Logout() {
+        this.authenticationService.signout();
+        this.router.navigate(["Home"]);
+    }
 
 
-  //проперти, которое показывает зашли мы или нет. используется в html, очень удобно
-  get signedIn(): boolean {
-    return this.HHelpers.tokenNotExpired();
-  }
+    //проперти, которое показывает зашли мы или нет. используется в html, очень удобно
+    get signedIn(): boolean {
+        return this.Helpers.tokenNotExpired();
+    }
 
-  show() {
-    this.msgs = [];
-    this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
-  }
+    show() {
+        this.primengMsgs = [];
+        this.primengMsgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
+    }
 
-  hide() {
-    this.msgs = [];
-  }
+    hide() {
+        this.primengMsgs = [];
+    }
 
 }
 

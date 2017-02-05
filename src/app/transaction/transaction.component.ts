@@ -22,8 +22,8 @@ import { SubmitButton } from '../shared/SubmitButton';
     encapsulation: ViewEncapsulation.None
 })
 export class TransactionComponent implements OnInit {
-    msgs: Message[] = [];
-    msgs2: Message[] = [];
+    primengMsgs: Message[] = [];
+    primengMsgs2: Message[] = [];
 
     complexForm: FormGroup;
     public stateCtrl: FormControl = new FormControl();
@@ -69,11 +69,11 @@ export class TransactionComponent implements OnInit {
    
 
     show() {
-        this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
+        this.primengMsgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
     }
 
     hide() {
-        this.msgs = [];
+        this.primengMsgs = [];
     }
 
     public getusersAsObservable(token: string): Observable<any> {

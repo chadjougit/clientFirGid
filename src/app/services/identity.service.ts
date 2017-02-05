@@ -117,7 +117,9 @@ import { AuthHttp } from 'angular2-jwt';
     }
 
 
-
+    /**
+     * Send transaction to user by username
+     */
     public SendTransactionToUser(username: string, summ: number): Observable<any> {
 
         let summy: string = summ.toString();
@@ -126,26 +128,18 @@ import { AuthHttp } from 'angular2-jwt';
 
         let body: any = JSON.stringify(colors);
 
-
-
         // Sends an authenticated request.
         return this.authHttp.post("http://localhost:5000/api/identity/SendTransactionToUser", body, this.options)
             .map((res: Response) => {
 
                 return res.json();
-
             })
             .catch((error: any) => {
 
                 // Error on post request.
                 return Observable.throw(error);
-
             });
-
     }
 
-
-
     // Add other methods.
-
 }
