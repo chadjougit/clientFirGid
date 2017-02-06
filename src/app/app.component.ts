@@ -86,17 +86,17 @@ export class AppComponent {
 
 
             //TODO:поменять мэссэдж
-            if (socketId == "booooong! MANY COOOOME") {
+            if (socketId == "new transaction alert") {
 
                 console.log("let's invoke getcurrentuserdata");
                 this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => {
                     console.log("GetCurrentUserData " + data);
 
-                    this.parsedata = JSON.parse(data);
+                    let parsedata = JSON.parse(data);
 
-                    this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
-                    this.store.dispatch(new UpdateAmount(this.parsedata.UserTransactions));
-                    this.show()
+                    this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
+                    this.store.dispatch(new UpdateAmount(parsedata.UserPw));
+                    this.show("success", "success!", "new transaction was recivied")
 
                     console.log(this.parsedata);
                 });
@@ -181,9 +181,11 @@ export class AppComponent {
         return this.Helpers.tokenNotExpired();
     }
 
-    show() {
+    show(severity: string, summary: string, detail: string) {
         this.primengMsgs = [];
-        this.primengMsgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
+        this.primengMsgs.push({ severity: severity, summary: summary, detail: detail });
+      //   this.primengMsgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
+         //   this.primengMsgs.push({severity:'info', summary:'Message 1', detail:'PrimeNG rocks'});
     }
 
     hide() {

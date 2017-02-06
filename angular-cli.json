@@ -23,14 +23,18 @@
        
         
         "styles.css",
+         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+            "../node_modules/bootstrap/dist/css/bootstrap-theme.min.css",
+     
+          "assets/bootstrap-theme.min.css",
         "../node_modules/font-awesome/css/font-awesome.css",
          "../node_modules/primeng/resources/primeng.min.css",
-            "../node_modules/primeng/resources/themes/omega/theme.css",
-             "public/bootstrap-theme.min.css"
+            "../node_modules/primeng/resources/themes/omega/theme.css"
       
       ],
       "scripts": [
-       
+        "assets/jquery-3.1.1.min.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
           "../node_modules/moment/min/moment.min.js"
          
       ],
