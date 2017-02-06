@@ -43,14 +43,14 @@ export class HistoryComponent implements OnInit {
     userData: any;
 
     userDataCopied: any;
-   
+
 
     simpleArray4userData: any;
 
     constructor(public authHttp: AuthHttp, private router: Router, public identity: IdentityService, private store: Store<State>) {
 
         this.userData = this.store.select("UserDataReducer");
-        this.GetTransactionsFromReducer();
+
 
         console.log('today is', moment());
 
@@ -62,7 +62,7 @@ export class HistoryComponent implements OnInit {
     lastUpdated = new Date();
 
     ngOnInit() {
-
+        this.GetTransactionsFromReducer();
     }
 
 
@@ -122,19 +122,23 @@ export class HistoryComponent implements OnInit {
 
                 this.userDataCopied = JSON.parse(JSON.stringify(data));
 
-                 this.simpleArray4userData = [];
-                for (let entry of this.userDataCopied.transactions) {
+                this.simpleArray4userData = [];
 
-                    let newtrans = { Id: entry.Id, amount: entry.Amount, SenderUsername: entry.SenderUsername, RecipientUsername: entry.RecipientUsername, Date: new Date(Date.parse(entry.Date)) };
+                if (this.userDataCopied.transactions != null) {
+
+                    for (let entry of this.userDataCopied.transactions) {
+
+                        let newtrans = { Id: entry.Id, amount: entry.Amount, SenderUsername: entry.SenderUsername, RecipientUsername: entry.RecipientUsername, Date: new Date(Date.parse(entry.Date)) };
 
 
-                    this.simpleArray4userData.push(newtrans);
+                        this.simpleArray4userData.push(newtrans);
+                    }
+
+
+                    this.simpleArray4userData = this.simpleArray4userData.sort(function (a, b) {
+                        return (Date.parse(b.Date) - Date.parse(a.Date)) || 0;
+                    });
                 }
-
-
-                this.simpleArray4userData = this.simpleArray4userData.sort(function (a, b) {
-                    return (Date.parse(b.Date) - Date.parse(a.Date)) || 0;
-                });
 
                 //this.userDataCopied2 =  this.userDataCopied.transactions.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 

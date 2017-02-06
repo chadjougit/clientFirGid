@@ -18,14 +18,19 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
+        "public/spinkit.min.css",
+       
+       
+        
         "styles.css",
         "../node_modules/font-awesome/css/font-awesome.css",
          "../node_modules/primeng/resources/primeng.min.css",
-            "../node_modules/primeng/resources/themes/omega/theme.css"
+            "../node_modules/primeng/resources/themes/omega/theme.css",
+             "public/bootstrap-theme.min.css"
       
       ],
       "scripts": [
-        
+       
           "../node_modules/moment/min/moment.min.js"
          
       ],

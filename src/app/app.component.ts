@@ -17,6 +17,8 @@ import { SubmitButton } from './shared/SubmitButton';
 
 import { Message, GrowlModule } from 'primeng/primeng';
 
+import { Log, Level } from 'ng2-logger/ng2-logger';
+
 
 @Component({
     selector: 'app-root',
@@ -27,26 +29,22 @@ import { Message, GrowlModule } from 'primeng/primeng';
 
 
 export class AppComponent {
-    title = 'app works!';
-    complexForm: FormGroup;
 
-    //
+    complexForm: FormGroup;
     primengMsgs: Message[] = [];
 
     userData: any;
     connection: any;
     parsedata: any;
-
-
-
-
-
     SubmitButton = new SubmitButton("Submit");
-
 
     constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router,
         public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public Helpers: Helpers, private differs: KeyValueDiffers) {
 
+ //Log.setProductionMode();
+  const log = Log.create('books'); 
+ 
+  log.er('test error log'); // console.log
 
 
         this.connection = new Connection("ws://localhost:5000/test");
@@ -60,12 +58,19 @@ export class AppComponent {
             this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => {
                 console.log("GetCurrentUserData " + data);
 
-                this.parsedata = JSON.parse(data);
+
+
+               //TODO: this "data" with double quotes. It's produce an error while parsing. Need to fix
+               //quickfix 
+               //data = data.replace(/^"(.*)"$/, '$1'); 
+               //
+                let parsedata = JSON.parse(data);
+              //this.parsedata = data;
 
 
                 //добавляем полученные данные в стор
-                this.store.dispatch(new UpdateHistory(this.parsedata.UserTransactions));
-                this.store.dispatch(new UpdateAmount(this.parsedata.UserPw));
+             this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
+                                this.store.dispatch(new UpdateAmount(parsedata.UserPw));
                 console.log(this.parsedata);
             });
         }
@@ -79,6 +84,8 @@ export class AppComponent {
         this.connection.clientMethods["receiveMessage"] = (socketId, message) => {
             var messageText = socketId + " said: " + message;
 
+
+            //TODO:поменять мэссэдж
             if (socketId == "booooong! MANY COOOOME") {
 
                 console.log("let's invoke getcurrentuserdata");
@@ -102,6 +109,7 @@ export class AppComponent {
 
         Helpers.tokenSubject.subscribe((value) => {
             console.log("Subscription got", value);
+             log.er('Subscription got'); // console.log
 
             if (value == true) {
                 this.connection.start().subscribe((connectionvalue) => {

@@ -14,6 +14,7 @@ import 'rxjs/add/operator/take'
 
 import { Message, GrowlModule } from 'primeng/primeng';
 import { SubmitButton } from '../shared/SubmitButton';
+import { Log, Level } from 'ng2-logger/ng2-logger';
 
 @Component({
     selector: 'app-transaction',
@@ -45,8 +46,14 @@ export class TransactionComponent implements OnInit {
     SubmitButton = new SubmitButton("Submit");
 
     constructor(fb: FormBuilder, public identity: IdentityService, private store: Store<State>) {
-       
+       const log = Log.create('transactions');
+       log.color = "red"; 
+       log.er('transactions error log'); // console.log
         this.GetAllUsers();
+         log.d('object') // console.log
+    log.er('object') // console.error
+    log.i('object') // console.info
+    log.w('object') // console.warn
 
         this.dataSource = Observable.create((observer: any) => {
             // Runs on every search
