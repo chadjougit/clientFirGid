@@ -15,12 +15,6 @@ import { Helpers } from './Helpers';
 @Injectable()
 export class AuthenticationService {
 
-
-
-
-
-
-
     /**
      * Stores the URL so we can redirect after signing in.
      */
@@ -342,19 +336,7 @@ export class AuthenticationService {
 
     }
 
-
-
-    public getAm(): any {
-
-        let token: string = this.Helpers.getToken('id_token');
-
-        if (token != null && this.Helpers.tokenNotExpired()) {
-     return Observable
-         .interval(5000).flatMap(x =>  this.Helpers.getToken('id_token') != null?  this.authHttp.get('http://localhost:5000/api/identity/GetAmount') :  Observable.of('') )
-        }
-
-    }
-
+//TODO: remove this
     public fetchModel(): Observable<boolean> {
   if(!this.Helpers.tokenNotExpired) {
     return new Observable<false>()

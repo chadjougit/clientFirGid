@@ -30,12 +30,6 @@ export function matchingPasswords(passwordKey: string, confirmPasswordKey: strin
     }
 }
 
-class Category {
-
-    username: string = "Tom@mail.ru"; password: string = "MypassTest1!"; givenName: string = "Tommy"; familyName: string = "Stark";
-
-
-}
 
 @Component({
     selector: 'app-signup',
@@ -70,8 +64,6 @@ export class SignupComponent implements OnInit {
 
 
     signup(): void {
-
-
         console.log(this.complexForm.value);
 
         this.identity.Create(this.complexForm.value)
@@ -96,8 +88,6 @@ export class SignupComponent implements OnInit {
 
             },
             (error: any) => {
-
-
                 console.log("registration notdone!!!");
 
                 // Error on post request.

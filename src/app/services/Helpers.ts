@@ -65,12 +65,6 @@ export class Helpers {
         console.log(this.tokenSubject.value + "tokenSubject!!");
         if (!this.tokenSubject.value)
         { this.tokenSubject.next(true); }
-
-
-
-
-
-
     }
 
     /**
@@ -84,7 +78,6 @@ export class Helpers {
         //  this._collectionObserver.next(false);
         if (this.tokenSubject.value)
             this.tokenSubject.next(false);
-
     }
 
     /**
@@ -93,9 +86,7 @@ export class Helpers {
      * @param exp Token expiration in milliseconds
      */
     public setExp(exp: number) {
-
         localStorage.setItem("exp", exp.toString());
-
     }
 
     /**
@@ -115,9 +106,7 @@ export class Helpers {
      * @return Token expiration in milliseconds
      */
     public removeExp(): void {
-
         localStorage.removeItem("exp");
-
     }
 
 }

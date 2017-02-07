@@ -24,7 +24,6 @@ import { Log, Level } from 'ng2-logger/ng2-logger';
 })
 export class TransactionComponent implements OnInit {
     primengMsgs: Message[] = [];
-    primengMsgs2: Message[] = [];
 
     complexForm: FormGroup;
     public stateCtrl: FormControl = new FormControl();
@@ -69,11 +68,6 @@ export class TransactionComponent implements OnInit {
     }
 
     users: any;
-    /**
-     *метод на основе ngbootstrap для заполняемой строки
-     */
-
-   
 
     show() {
         this.primengMsgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
@@ -156,9 +150,6 @@ export class TransactionComponent implements OnInit {
                         if (res.succeeded) {
                             this.SubmitButton.activate()
                             console.log(res.succeeded);
-
-
-
 
                         } else {
                             console.log(res.errors);

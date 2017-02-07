@@ -9,9 +9,6 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 
 
-
-
-
 export interface Transaction {
     Id: number;
     Amount: number;
@@ -51,24 +48,20 @@ export class HistoryComponent implements OnInit {
 
         this.userData = this.store.select("UserDataReducer");
 
-
-        console.log('today is', moment());
-
-
-
-
+        // testing moment.js
+        //  console.log('today is', moment());
     }
 
-    lastUpdated = new Date();
+
 
     ngOnInit() {
         this.GetTransactionsFromReducer();
     }
 
 
-
-
-
+    /**
+    * sending transaction by id to ngrx
+    */
 
     SendTransactionId(id: number) {
 
@@ -77,8 +70,6 @@ export class HistoryComponent implements OnInit {
         this.store.dispatch(new AddNewTransaction(transactionsToSend.map(trans => { trans.Amount = trans.Amount * 1; return trans }).find(trans => trans.Id == id)));
 
         this.router.navigate(["Transaction"]);
-
-
     }
 
 
@@ -89,7 +80,6 @@ export class HistoryComponent implements OnInit {
                 // Set the products Array
                 //this.userData.transactions = data.transactions;
 
-
                 /*
                 var testtt = data.transactions;
                 var testtt2 = Object.assign({},data.transactions); 
@@ -98,34 +88,16 @@ export class HistoryComponent implements OnInit {
                 let object3 = Object.freeze(Object.assign({}, data.transaction));
                 var newObject = Object.assign(Object.create(data), data);
                 const clone = JSON.parse(JSON.stringify(data));
-                
-                
-                              this.userDataCopied =  Object.assign({},data); 
-                                 
-                                 
-                
-                             //  this.userDataCopied = null;
-                
-                
-                                this.userDataCopied.amount = 150; 
-                
-                              //  this.userDataCopied.transactions.map(somedata => { somedata.Date = "test"; return somedata }) 
-                
-                               for (let entry of  this.userDataCopied.transactions) {
-                                   
-                                   entry.Amount = 0;
-                                   entry.Date = "test2";
-                    
-                }
                 */
 
-
+                // it's a little dumb, but this helps for deep clone. All stuff above not working.
+                // Simple clone just making changes in ngrx/store. 
+                //TODO: check for another realization.
                 this.userDataCopied = JSON.parse(JSON.stringify(data));
 
                 this.simpleArray4userData = [];
 
                 if (this.userDataCopied.transactions != null) {
-
                     for (let entry of this.userDataCopied.transactions) {
 
                         let newtrans = { Id: entry.Id, amount: entry.Amount, SenderUsername: entry.SenderUsername, RecipientUsername: entry.RecipientUsername, Date: new Date(Date.parse(entry.Date)) };
@@ -135,6 +107,7 @@ export class HistoryComponent implements OnInit {
                     }
 
 
+                    //
                     this.simpleArray4userData = this.simpleArray4userData.sort(function (a, b) {
                         return (Date.parse(b.Date) - Date.parse(a.Date)) || 0;
                     });
@@ -150,49 +123,7 @@ export class HistoryComponent implements OnInit {
                 this.userDataCopied.transactions.sort((task1, task2) => {task2.Date   - task1.Date});
                 */
 
-
-
-
-
                 console.log("test");
-
-                //this.userData = data;
             })
-
-
-
     }
-
-
-
-
-    /*
-        GetTransactions() {
-    
-            this.identity.GetTransactions()
-                .subscribe(
-                (res: string) => {
-    
-    
-                    console.log(JSON.parse(res));
-                    this.transaction = JSON.parse(res);
-                    this.transaction = this.transaction.sort(function (a, b) {
-                        return b.Id - a.Id})
-    
-                    this.store.dispatch(new UpdateHistory(this.transaction));
-                
-                },
-                (error: any) => {
-    
-                    // Error on post request.
-                    let errMsg = (error.message) ? error.message :
-                        error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-    
-                    console.log(errMsg);
-                    console.log("совсемnotsuccsess");
-    
-                });
-    
-        }
-    */
 }
