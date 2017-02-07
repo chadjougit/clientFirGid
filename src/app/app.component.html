@@ -22,7 +22,7 @@
          <form  *ngIf="!signedIn" [formGroup]="complexForm" (ngSubmit)="loginSubmitCLick$.next(complexForm.value)">
           <input class="form-control" placeholder="login" type="text" [formControl]="complexForm.controls['login']">
             <input class="form-control" placeholder="password" type="text" [formControl]="complexForm.controls['password']">
-        <button class="btn btn-default" [disabled]="!this.SubmitButton.isActive" type="submit">{{this.SubmitButton.innerText}}</button>
+        <button class="btn btn-default" [disabled]="!this.SubmitButton.isActive || !complexForm.valid" type="submit">{{this.SubmitButton.innerText}}</button>
           </form>
          
         </form>

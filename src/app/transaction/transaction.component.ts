@@ -102,8 +102,9 @@ export class TransactionComponent implements OnInit {
     }
 
     /**
-     *Метод для вызова списка пользователей с сервера. Возможно стоит его вызывать с интервалом
+     *Method that gets all users from server. 
      */
+    //TODO: perhaps need to use an interval
     GetAllUsers() {
         this.identity.GetAllUsers()
             .subscribe(
@@ -129,15 +130,18 @@ export class TransactionComponent implements OnInit {
         e => console.log('onError: %s', e),
         () => console.log('onCompleted'));
 
+
+     /**
+     *send transaction to user by his username 
+     */
     SendTransactionToUser(username: string, summ: number) {
         this.userData.take(1).subscribe(content => {
-            //потом поправить!!!!!
-            if (content.amount - this.userData.amount < 0) {
+            if (content.amount - this.userData.amount <= 0) {
                 console.log("маааало");
                 alert("need more");
             }
 
-            else if (this.userData.amount < 0)
+            else if (this.userData.amount <= 0)
             { alert("wrong summ!"); }
 
             else {
@@ -173,12 +177,22 @@ export class TransactionComponent implements OnInit {
                             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
 
                         console.log(errMsg);
-                        this.SubmitButton.activate()
-                        
+                        this.SubmitButton.activate()    
                     });
             }
         });
     }
+
+
+Test(){
+
+ this.identity.Test("vlad@mail.com")
+                    .subscribe(
+                    (res: any) => {
+                        console.log(res);
+})};
+
+
 
     ngOnInit() {
         this.userData.take(1).subscribe(content => {

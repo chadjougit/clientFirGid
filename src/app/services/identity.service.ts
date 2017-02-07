@@ -116,6 +116,55 @@ import { AuthHttp } from 'angular2-jwt';
 
     }
 
+/*
+    public Test(username: string): Observable<any> {
+ 
+        let body: string = JSON.stringify(username);
+
+        // Sends an authenticated request.
+        return this.authHttp.post("http://localhost:5000/api/identity/Test", body, this.options)
+            .map((res: Response) => {
+                console.log(res);
+                return res.json();
+
+            })
+            .catch((error: any) => {
+
+                // Error on post request.
+                return Observable.throw(error);
+
+            });
+
+    }
+*/
+
+       public Test(username: string): Observable<any> {
+ 
+        let body: string = JSON.stringify(username);
+
+        // Sends an authenticated request.
+        return this.authHttp.post("http://localhost:5000/api/identity/Test", body, this.options)
+            .map((res: Response) => {
+                if (res) {
+                    if (res.status === 201) {
+                        return [{ status: res.status, json: res }]
+                    }
+                    else if (res.status === 200) {
+                        return [{ status: res.status, json: res }]
+                    }
+                }
+            })
+            .catch((error: any) => {
+                if (error.status < 400 ||  error.status ===500) {
+                    return Observable.throw(new Error(error.status));
+                }
+            });
+
+    }
+
+
+
+
 
     /**
      * Send transaction to user by username

@@ -18,6 +18,7 @@ import { SubmitButton } from './shared/SubmitButton';
 import { Message, GrowlModule } from 'primeng/primeng';
 
 import { Log, Level } from 'ng2-logger/ng2-logger';
+import { CustomValidators } from 'ng2-validation';
 
 
 @Component({
@@ -138,8 +139,8 @@ export class AppComponent {
 
 
         this.complexForm = fb.group({
-            'login': ["", Validators.required],
-            'password': ["", Validators.required],
+            'login': ["", [Validators.required, CustomValidators.email]],
+            'password': ["", [Validators.required, Validators.minLength(6)]],
         })
     }
 

@@ -4,7 +4,7 @@
       <input formControlName="recipient" [typeahead]="users" (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeaheadOptionsLimit]="7"
         [typeaheadOptionField]="'name'" [typeaheadMinLength]="0" placeholder="Typeahead inside a form" class="form-control">
       <input class="form-control" placeholder="Amount" type="text" [formControl]="complexForm.controls['Amount']">
-      <button class="btn btn-primary center-block" [disabled]="!this.SubmitButton.isActive" type="submit">{{this.SubmitButton.innerText}}</button>
+      <button class="btn btn-primary center-block" [disabled]="!this.SubmitButton.isActive || !complexForm.valid" type="submit">{{this.SubmitButton.innerText}}</button>
     </form>
   </div>
 </div>
@@ -14,4 +14,6 @@
 
 
 <p-growl [value]="primengMsgs"></p-growl>
+
+<button (click)="Test()">Test</button>
 

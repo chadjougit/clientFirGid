@@ -52,11 +52,11 @@ export class SignupComponent implements OnInit {
             'username': ["", [Validators.required, CustomValidators.email]],
             // We can use more than one validator per field.
             // If we want to use more than one validator we have to wrap our array of validators with a Validators.compose function. Here we are using a required, minimum length and maximum length validator.
-            'password': ["mypass", [Validators.required, Validators.minLength(6)]],
+            'password': ["", [Validators.required, Validators.minLength(6)]],
 
             'passwordCheck': ["", Validators.required],
 
-            'name': ["VLad", [Validators.required, Validators.minLength(2)]],
+            'name': ["", [Validators.required, Validators.minLength(2)]],
         },
             { validator: matchingPasswords('password', 'passwordCheck') }
         )
