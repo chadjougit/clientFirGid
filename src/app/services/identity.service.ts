@@ -43,6 +43,29 @@ import { AuthHttp } from 'angular2-jwt';
 
     }
 
+
+    public GetCurrentUserData2(Websocketid?: string): Observable<any> {
+
+        let body: any = JSON.stringify(Websocketid);
+        // Sends an authenticated request.
+        return this.authHttp.post("http://localhost:5000/api/identity/GetCurrentUserData2", body, this.options)
+            .map((res: Response) => {
+
+                return res.json();
+
+            })
+            .catch((error: any) => {
+
+                // Error on get request.
+                return Observable.throw(error);
+
+            });
+
+    }
+
+
+
+
     public GetAllUsers(): Observable<any> {
 
         // Sends an authenticated request.
@@ -178,7 +201,7 @@ import { AuthHttp } from 'angular2-jwt';
         let body: any = JSON.stringify(colors);
 
         // Sends an authenticated request.
-        return this.authHttp.post("http://localhost:5000/api/identity/SendTransactionToUser", body, this.options)
+        return this.authHttp.post("http://localhost:5000/api/identity/SendTransactionToUser2", body, this.options)
             .map((res: Response) => {
 
                 return res.json();

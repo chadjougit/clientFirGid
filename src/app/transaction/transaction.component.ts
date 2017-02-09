@@ -41,18 +41,14 @@ export class TransactionComponent implements OnInit {
 
     // userData: Observable<any>;
     userData: any;
-
+ log = Log.create('transactions');
     SubmitButton = new SubmitButton("Submit");
 
     constructor(fb: FormBuilder, public identity: IdentityService, private store: Store<State>) {
-       const log = Log.create('transactions');
-       log.color = "red"; 
-       log.er('transactions error log'); // console.log
+
+      
         this.GetAllUsers();
-         log.d('object') // console.log
-    log.er('object') // console.error
-    log.i('object') // console.info
-    log.w('object') // console.warn
+
 
         this.dataSource = Observable.create((observer: any) => {
             // Runs on every search
@@ -63,14 +59,21 @@ export class TransactionComponent implements OnInit {
 
         this.complexForm = fb.group({
             'recipient': ["", [Validators.required, CustomValidators.email]],
-            'Amount': ["100", [Validators.required, CustomValidators.number]],
+            'Amount': ["100", [Validators.required, CustomValidators.number, CustomValidators.min(1)]],
         })
     }
 
     users: any;
 
-    show() {
+    showdel() {
         this.primengMsgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
+    }
+
+        show(severity: string, summary: string, detail: string) {
+        this.primengMsgs = [];
+        this.primengMsgs.push({ severity: severity, summary: summary, detail: detail });
+      //   this.primengMsgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
+         //   this.primengMsgs.push({severity:'info', summary:'Message 1', detail:'PrimeNG rocks'});
     }
 
     hide() {
@@ -151,16 +154,9 @@ export class TransactionComponent implements OnInit {
                     .subscribe(
                     (res: any) => {
                         // IdentityResult.
-                        if (res.succeeded) {
-                            this.SubmitButton.activate()
-                            console.log(res.succeeded);
-
-                        } else {
-                            console.log(res.errors);
-                        }
                         this.SubmitButton.activate()
-                         this.show();
-                            this.identity.GetCurrentUserData().subscribe((data) => {
+                         this.show("success", "Success Message", "sucess transaction");
+                            this.identity.GetCurrentUserData2().subscribe((data) => {
                                 console.log("GetCurrentUserData " + data);
 
                                 let parsedata = JSON.parse(data);
@@ -169,14 +165,26 @@ export class TransactionComponent implements OnInit {
                                 //добавляем полученные данные в стор
                                 this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
                                 this.store.dispatch(new UpdateAmount(parsedata.UserPw));
-                            });
+                            }, (error: any) => {if (error.status < 400 ||  error.status ===500) {
+                                      this.log.er(error); 
+                                      this.log.er(error.json());// console.log
+                   console.log("internal error in GetCurrentUserData");
+                   console.warn("internal error in GetCurrentUserData");
+                   console.info(error);
+                   console.error(error.json());
+
+                }});
                     },
                     (error: any) => {
-                        // Error on post request.
-                        let errMsg = (error.message) ? error.message :
-                            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-
-                        console.log(errMsg);
+                        if (error.status == 400)
+                        {
+                            this.show("error", "invalid data", "please verify input fields!");
+                            console.warn(error)
+                        }
+                        else{
+                             this.show("error", "server error", "");
+                            console.error(error);
+                        }
                         this.SubmitButton.activate()    
                     });
             }
