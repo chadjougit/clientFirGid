@@ -186,13 +186,7 @@ export class TransactionComponent implements OnInit {
         });
     }
 
-    Test() {
-        this.identity.Test("vlad@mail.com")
-            .subscribe(
-            (res: any) => {
-                console.log(res);
-            })
-    };
+   
 
     ngOnInit() {
         this.userData.take(1).subscribe(content => {
