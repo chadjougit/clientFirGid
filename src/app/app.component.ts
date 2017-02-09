@@ -143,11 +143,13 @@ export class AppComponent {
             'password': ["", [Validators.required, Validators.minLength(6)]],
         })
     }
+ 
+
+    loginSubmitCLick() {}  
 
     loginSubmitCLick$: Observable<any> = new Subject().map((value: any) => {
         console.log('loginSubmitCLick pressed');
-        //console.log(value);
-        this.login();
+       // this.login();
     });
 
     subscription: any = this.loginSubmitCLick$.subscribe(
@@ -155,13 +157,17 @@ export class AppComponent {
         e => console.log('onError: %s', e),
         () => console.log('onCompleted'));
 
-    login() {
+    login(value) {
         this.SubmitButton.deactivate();
         // this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
 
-        this.authenticationService.signin(this.complexForm.value.login, this.complexForm.value.password).subscribe(
+        //this.authenticationService.signin(this.complexForm.value.login, this.complexForm.value.password).subscribe(
+            this.authenticationService.signin(value.login, value.password).subscribe(
             x => { this.SubmitButton.activate(); this.authenticationService.scheduleRefresh(); },
-            e => this.SubmitButton.activate());
+            e => {this.SubmitButton.activate();
+            this.show("error", "error", "username or password is invalid");
+        }
+            );
 
 
 

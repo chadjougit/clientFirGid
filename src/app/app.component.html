@@ -19,7 +19,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a  *ngIf="signedIn" (click)="Logout()">Logout</a></li>
         <form class="navbar-form">     
-         <form  *ngIf="!signedIn" [formGroup]="complexForm" (ngSubmit)="loginSubmitCLick$.next(complexForm.value)">
+         <form  *ngIf="!signedIn" [formGroup]="complexForm" (ngSubmit)="login(complexForm.value)">
           <input class="form-control" placeholder="login" type="text" [formControl]="complexForm.controls['login']">
             <input class="form-control" placeholder="password" type="text" [formControl]="complexForm.controls['password']">
         <button class="btn btn-default" [disabled]="!this.SubmitButton.isActive || !complexForm.valid" type="submit">{{this.SubmitButton.innerText}}</button>
