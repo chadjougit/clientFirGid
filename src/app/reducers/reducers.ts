@@ -2,14 +2,12 @@ import { ActionReducer, Action } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { transition } from '@angular/core';
 
-
 export const ActionTypes = {
     UpdateAmount: '[UserData] UpdateAmount',
     UpdateHistory: '[UserData] UpdateHistory',
     AddNewTransaction: '[UserData] AddNewTransaction',
     UpdateWebsocketId: '[UserData] UpdateWebsocketId',
     ToDefault: '[UserData] ToDefault'
-
 };
 
 export class UpdateAmount implements Action {
@@ -49,32 +47,26 @@ export type Actions
     | UpdateWebsocketId
     | ToDefault
 
-
 interface transaction {
     Id: number;
     amount: number;
     SenderUsername: string;
     RecipientUsername: string;
     Date: string;
-
 }
 
 export interface State {
-
     amount: number;
     transactions: transaction[];
     newTranscation: transaction;
     websocketId: string;
-
 }
 
 const initialState: State = {
-
     amount: null,
     transactions: null,
     websocketId: null,
     newTranscation: { Id: 0, amount: 0, SenderUsername: "", RecipientUsername: "", Date: "date" }
-
 };
 
 export function UserDataReducer(state: State = initialState, action: Actions) {
@@ -83,7 +75,6 @@ export function UserDataReducer(state: State = initialState, action: Actions) {
             var amount2 = action.payload;
 
             return Object.assign({}, state, { amount: amount2 });
-
         }
 
         case ActionTypes.UpdateHistory: {
@@ -91,21 +82,18 @@ export function UserDataReducer(state: State = initialState, action: Actions) {
         }
 
         case ActionTypes.AddNewTransaction: {
-          
             //к примеру, в transaction не должно придти отрицательное число
             action.payload.Amount = action.payload.Amount * -1;
-            return Object.assign({}, state, { newTranscation: action.payload  });
+            return Object.assign({}, state, { newTranscation: action.payload });
         }
 
         case ActionTypes.UpdateWebsocketId: {
             return Object.assign({}, state, { websocketId: action.payload });
         }
 
-        
         case ActionTypes.ToDefault: {
-            return Object.assign({}, state = initialState );
+            return Object.assign({}, state = initialState);
         }
-
 
         default:
             return state;

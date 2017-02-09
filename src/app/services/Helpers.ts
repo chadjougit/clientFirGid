@@ -12,7 +12,6 @@ import { BehaviorSubject } from 'rxjs/Rx';
 
 @Injectable()
 export class Helpers {
-
     //public collection$: Observable<any>;
     public _collectionObserver: any;
     public _collection: Array<string>;
@@ -20,16 +19,14 @@ export class Helpers {
         this._collectionObserver = observer;
     }).share();
 
-
-     /**
-     * Emit "true" when we set token in localStorage, "false" when we remove
-     */
+    /**
+    * Emit "true" when we set token in localStorage, "false" when we remove
+    */
     public tokenSubject = new BehaviorSubject(false);
 
     constructor() {
         this.tokenSubject.next(this.tokenNotExpired());
     }
-
 
     /**
      * Gets the token from the storage.
@@ -39,17 +36,13 @@ export class Helpers {
      */
 
     tokenNotExpired(): boolean {
-
         let token: string = this.getToken('id_token');
 
         return token != null && (this.getExp() > new Date().valueOf());
     }
 
     public getToken(name: string): string {
-
         return localStorage.getItem(name);
-
-
     }
 
     /**
@@ -59,7 +52,6 @@ export class Helpers {
      * @param value The token
      */
     public setToken(name: string, value: string) {
-
         localStorage.setItem(name, value);
         //this._collectionObserver.next("true");
         console.log(this.tokenSubject.value + "tokenSubject!!");
@@ -73,7 +65,6 @@ export class Helpers {
      * @param name Token's name
      */
     public removeToken(name: string): void {
-
         localStorage.removeItem(name);
         //  this._collectionObserver.next(false);
         if (this.tokenSubject.value)
@@ -95,9 +86,7 @@ export class Helpers {
      * @return Token expiration in milliseconds
      */
     public getExp(): number {
-
         return parseInt(localStorage.getItem("exp"));
-
     }
 
     /**
@@ -108,6 +97,4 @@ export class Helpers {
     public removeExp(): void {
         localStorage.removeItem("exp");
     }
-
 }
-

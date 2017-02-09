@@ -14,7 +14,6 @@ import { SigninService } from '../services/signin.service';
 import { IdentityService } from '../services/identity.service';
 import { CustomValidators } from 'ng2-validation';
 
-
 export function matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
     return (group: FormGroup): {
         [key: string]: any
@@ -30,24 +29,19 @@ export function matchingPasswords(passwordKey: string, confirmPasswordKey: strin
     }
 }
 
-
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-
-
     userName: string = null;
     complexForm: FormGroup;
     testing: string;
 
     constructor(fb: FormBuilder, private Signin: SigninService, private router: Router, public identity: IdentityService) {
-
-
         this.complexForm = fb.group({
-            // To add a validator, we must first convert the string value into an array. 
+            // To add a validator, we must first convert the string value into an array.
             //The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
             'username': ["", [Validators.required, CustomValidators.email]],
             // We can use more than one validator per field.
@@ -62,30 +56,23 @@ export class SignupComponent implements OnInit {
         )
     }
 
-
     signup(): void {
         console.log(this.complexForm.value);
 
         this.identity.Create(this.complexForm.value)
             .subscribe(
             (res: any) => {
-
                 // IdentityResult.
                 if (res.succeeded) {
-
                     // Signs in the user.
                     // this.signin();
 
                     console.log("registration done");
-
-
                 } else {
                     console.log("registration notdone");
                     this.userName = "username is already exist";
                     //  this.errorMessages = res.errors;
-
                 }
-
             },
             (error: any) => {
                 console.log("registration notdone!!!");
@@ -97,10 +84,8 @@ export class SignupComponent implements OnInit {
                 console.log(errMsg);
 
                 //  this.errorMessage = "Server error. Try later.";
-
             });
     }
-
 
     click$: Observable<any> = new Subject().map((value: any) => {
         const val = value;
@@ -114,7 +99,6 @@ export class SignupComponent implements OnInit {
         e => console.log('onError: %s', e),
         () => console.log('onCompleted'));
 
-
     login() {
         if (this.Signin.signin(this.complexForm.value.firstName, this.complexForm.value.lastName))
         { this.router.navigate(['Home']) }
@@ -122,8 +106,4 @@ export class SignupComponent implements OnInit {
 
     ngOnInit() {
     }
-
 }
-
-
-

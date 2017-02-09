@@ -11,77 +11,38 @@ import { AuthHttp } from 'angular2-jwt';
  * Identity service (to Identity Web API controller).
  */
 @Injectable() export class IdentityService {
-
     headers: Headers;
     options: RequestOptions;
 
     constructor(private authHttp: AuthHttp, private http: Http) {
-
         // Creates header for post requests.
         this.headers = new Headers({ 'Content-Type': 'application/json' });
         this.options = new RequestOptions({ headers: this.headers });
-
     }
 
-
     public GetCurrentUserData(Websocketid?: string): Observable<any> {
-
         let body: any = JSON.stringify(Websocketid);
         // Sends an authenticated request.
         return this.authHttp.post("http://localhost:5000/api/identity/GetCurrentUserData", body, this.options)
             .map((res: Response) => {
-
                 return res.json();
-
             })
             .catch((error: any) => {
-
                 // Error on get request.
                 return Observable.throw(error);
-
             });
-
     }
-
-
-    public GetCurrentUserData2(Websocketid?: string): Observable<any> {
-
-        let body: any = JSON.stringify(Websocketid);
-        // Sends an authenticated request.
-        return this.authHttp.post("http://localhost:5000/api/identity/GetCurrentUserData2", body, this.options)
-            .map((res: Response) => {
-
-                return res.json();
-
-            })
-            .catch((error: any) => {
-
-                // Error on get request.
-                return Observable.throw(error);
-
-            });
-
-    }
-
-
-
 
     public GetAllUsers(): Observable<any> {
-
         // Sends an authenticated request.
         return this.authHttp.get("http://localhost:5000/api/identity/GetAllUsers")
             .map((res: Response) => {
-
                 return res.json();
-
             })
             .catch((error: any) => {
-
                 // Error on get request.
                 return Observable.throw(error);
-
             });
-
     }
 
     /**
@@ -91,7 +52,6 @@ import { AuthHttp } from 'angular2-jwt';
      * @return An IdentityResult
      */
     public Create(model: any): Observable<any> {
-
         let body: string = JSON.stringify(model);
 
         console.log("body");
@@ -100,69 +60,52 @@ import { AuthHttp } from 'angular2-jwt';
 
         return this.http.post("http://localhost:5000/api/identity/Create", body, this.options)
             .map((res: Response) => {
-
                 return res.json();
-
             })
             .catch((error: any) => {
-
                 // Error on post request.
                 return Observable.throw(error);
-
             });
-
     }
 
     /**
      * Deletes a user through AuthHttp.
-     * 
+     *
      * @param username Username of the user
      * @return An IdentityResult
      */
     public Delete(username: string): Observable<any> {
-
         let body: string = JSON.stringify(username);
 
         // Sends an authenticated request.
         return this.authHttp.post("http://localhost:5000/api/identity/Delete", body, this.options)
             .map((res: Response) => {
-
                 return res.json();
-
             })
             .catch((error: any) => {
-
                 // Error on post request.
                 return Observable.throw(error);
-
             });
-
     }
 
-/*
+    /*
+        public Test(username: string): Observable<any> {
+            let body: string = JSON.stringify(username);
+
+            // Sends an authenticated request.
+            return this.authHttp.post("http://localhost:5000/api/identity/Test", body, this.options)
+                .map((res: Response) => {
+                    console.log(res);
+                    return res.json();
+                })
+                .catch((error: any) => {
+                    // Error on post request.
+                    return Observable.throw(error);
+                });
+        }
+    */
+
     public Test(username: string): Observable<any> {
- 
-        let body: string = JSON.stringify(username);
-
-        // Sends an authenticated request.
-        return this.authHttp.post("http://localhost:5000/api/identity/Test", body, this.options)
-            .map((res: Response) => {
-                console.log(res);
-                return res.json();
-
-            })
-            .catch((error: any) => {
-
-                // Error on post request.
-                return Observable.throw(error);
-
-            });
-
-    }
-*/
-
-       public Test(username: string): Observable<any> {
- 
         let body: string = JSON.stringify(username);
 
         // Sends an authenticated request.
@@ -178,22 +121,16 @@ import { AuthHttp } from 'angular2-jwt';
                 }
             })
             .catch((error: any) => {
-                if (error.status < 400 ||  error.status ===500) {
+                if (error.status < 400 || error.status === 500) {
                     return Observable.throw(new Error(error.status));
                 }
             });
-
     }
-
-
-
-
 
     /**
      * Send transaction to user by username
      */
     public SendTransactionToUser(username: string, summ: number): Observable<any> {
-
         let summy: string = summ.toString();
 
         let colors: string[] = [username, summy];
@@ -201,13 +138,11 @@ import { AuthHttp } from 'angular2-jwt';
         let body: any = JSON.stringify(colors);
 
         // Sends an authenticated request.
-        return this.authHttp.post("http://localhost:5000/api/identity/SendTransactionToUser2", body, this.options)
+        return this.authHttp.post("http://localhost:5000/api/identity/SendTransactionToUser", body, this.options)
             .map((res: Response) => {
-
                 return res.json();
             })
             .catch((error: any) => {
-
                 // Error on post request.
                 return Observable.throw(error);
             });

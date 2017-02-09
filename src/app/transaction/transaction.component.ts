@@ -41,14 +41,11 @@ export class TransactionComponent implements OnInit {
 
     // userData: Observable<any>;
     userData: any;
- log = Log.create('transactions');
+    log = Log.create('transactions');
     SubmitButton = new SubmitButton("Submit");
 
     constructor(fb: FormBuilder, public identity: IdentityService, private store: Store<State>) {
-
-      
         this.GetAllUsers();
-
 
         this.dataSource = Observable.create((observer: any) => {
             // Runs on every search
@@ -69,11 +66,11 @@ export class TransactionComponent implements OnInit {
         this.primengMsgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
     }
 
-        show(severity: string, summary: string, detail: string) {
+    show(severity: string, summary: string, detail: string) {
         this.primengMsgs = [];
         this.primengMsgs.push({ severity: severity, summary: summary, detail: detail });
-      //   this.primengMsgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
-         //   this.primengMsgs.push({severity:'info', summary:'Message 1', detail:'PrimeNG rocks'});
+        //   this.primengMsgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
+        //   this.primengMsgs.push({severity:'info', summary:'Message 1', detail:'PrimeNG rocks'});
     }
 
     hide() {
@@ -105,7 +102,7 @@ export class TransactionComponent implements OnInit {
     }
 
     /**
-     *Method that gets all users from server. 
+     *Method that gets all users from server.
      */
     //TODO: perhaps need to use an interval
     GetAllUsers() {
@@ -133,10 +130,9 @@ export class TransactionComponent implements OnInit {
         e => console.log('onError: %s', e),
         () => console.log('onCompleted'));
 
-
-     /**
-     *send transaction to user by his username 
-     */
+    /**
+    *send transaction to user by his username
+    */
     SendTransactionToUser(username: string, summ: number) {
         this.userData.take(1).subscribe(content => {
             if (content.amount - this.userData.amount <= 0) {
@@ -155,52 +151,48 @@ export class TransactionComponent implements OnInit {
                     (res: any) => {
                         // IdentityResult.
                         this.SubmitButton.activate()
-                         this.show("success", "Success Message", "sucess transaction");
-                            this.identity.GetCurrentUserData2().subscribe((data) => {
-                                console.log("GetCurrentUserData " + data);
+                        this.show("success", "Success Message", "sucess transaction");
+                        this.identity.GetCurrentUserData().subscribe((data) => {
+                            console.log("GetCurrentUserData " + data);
 
-                                let parsedata = JSON.parse(data);
+                            let parsedata = JSON.parse(data);
 
-
-                                //добавляем полученные данные в стор
-                                this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
-                                this.store.dispatch(new UpdateAmount(parsedata.UserPw));
-                            }, (error: any) => {if (error.status < 400 ||  error.status ===500) {
-                                      this.log.er(error); 
-                                      this.log.er(error.json());// console.log
-                   console.log("internal error in GetCurrentUserData");
-                   console.warn("internal error in GetCurrentUserData");
-                   console.info(error);
-                   console.error(error.json());
-
-                }});
+                            //добавляем полученные данные в стор
+                            this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
+                            this.store.dispatch(new UpdateAmount(parsedata.UserPw));
+                        }, (error: any) => {
+                            if (error.status < 400 || error.status === 500) {
+                                this.log.er(error);
+                                this.log.er(error.json());// console.log
+                                console.log("internal error in GetCurrentUserData");
+                                console.warn("internal error in GetCurrentUserData");
+                                console.info(error);
+                                console.error(error.json());
+                            }
+                        });
                     },
                     (error: any) => {
-                        if (error.status == 400)
-                        {
+                        if (error.status == 400) {
                             this.show("error", "invalid data", "please verify input fields!");
                             console.warn(error)
                         }
-                        else{
-                             this.show("error", "server error", "");
+                        else {
+                            this.show("error", "server error", "");
                             console.error(error);
                         }
-                        this.SubmitButton.activate()    
+                        this.SubmitButton.activate()
                     });
             }
         });
     }
 
-
-Test(){
-
- this.identity.Test("vlad@mail.com")
-                    .subscribe(
-                    (res: any) => {
-                        console.log(res);
-})};
-
-
+    Test() {
+        this.identity.Test("vlad@mail.com")
+            .subscribe(
+            (res: any) => {
+                console.log(res);
+            })
+    };
 
     ngOnInit() {
         this.userData.take(1).subscribe(content => {

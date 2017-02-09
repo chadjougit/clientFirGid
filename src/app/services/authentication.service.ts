@@ -10,11 +10,8 @@ import { Config } from '../config';
 import { AuthHttp } from 'angular2-jwt';
 import { Helpers } from './Helpers';
 
-
-
 @Injectable()
 export class AuthenticationService {
-
     /**
      * Stores the URL so we can redirect after signing in.
      */
@@ -43,17 +40,13 @@ export class AuthenticationService {
     private headers: Headers;
     private options: RequestOptions;
 
-
     constructor(private http: Http, private authHttp: AuthHttp, public Helpers: Helpers) {
-
-
         // On bootstrap or refresh, tries to get users'data.
         this.userInfo();
 
         // Creates header for post requests.
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         this.options = new RequestOptions({ headers: this.headers });
-
     }
 
     /**
@@ -64,7 +57,6 @@ export class AuthenticationService {
      * @return The user's data
      */
     public signin(username: string, password: string): Observable<any> {
-
         // Token endpoint & params.
         let tokenEndpoint: string = Config.TOKEN_ENDPOINT;
 
@@ -83,26 +75,19 @@ export class AuthenticationService {
 
         return this.http.post(tokenEndpoint, body, this.options)
             .map((res: Response) => {
-
                 let body: any = res.json();
 
                 // Sign in successful if there's an access token in the response.
                 if (typeof body.access_token !== 'undefined') {
-
                     // Stores access token & refresh token.
                     this.store(body);
                     // Gets user info.
                     this.userInfo();
-
                 }
-
             }).catch((error: any) => {
-
                 // Error on post request.
                 return Observable.throw(error);
-
             });
-
     }
 
     /**
@@ -111,14 +96,11 @@ export class AuthenticationService {
      * It will schedule a refresh at the appropriate time.
      */
     public scheduleRefresh() {
-
         let source = this.authHttp.tokenStream.flatMap(
             (token: string) => {
-
                 let delay: number = this.expiresIn - this.offsetSeconds * 1000;
 
                 return Observable.interval(delay);
-
             });
 
         this.refreshSubscription = source.subscribe(() => {
@@ -127,25 +109,22 @@ export class AuthenticationService {
                 (error: any) => { this.unscheduleRefresh(); }
             );
         });
-
     }
 
     /**
      * Case when the user comes back to the app after closing it.
      */
     public startupTokenRefresh() {
-
         // If the user is authenticated, uses the token stream
         // provided by angular2-jwt and flatMap the token.
         if (this.Helpers.tokenNotExpired()) {
-
             let source = this.authHttp.tokenStream.flatMap(
                 (token: string) => {
                     let now: number = new Date().valueOf();
                     let exp: number = this.Helpers.getExp();
                     let delay: number = exp - now - this.offsetSeconds * 1000;
 
-                    // Uses the delay in a timer to run the refresh at the proper time. 
+                    // Uses the delay in a timer to run the refresh at the proper time.
                     return Observable.timer(delay);
                 });
 
@@ -158,27 +137,22 @@ export class AuthenticationService {
                     (error: any) => { console.log(error); }
                 );
             });
-
         }
-
     }
 
     /**
      * Unsubscribes from the scheduling of the refresh token.
      */
     public unscheduleRefresh() {
-
         if (this.refreshSubscription) {
             this.refreshSubscription.unsubscribe();
         }
-
     }
 
     /**
      * Tries to get a new token using refresh token.
      */
     public getNewToken(): Observable<any> {
-
         let refreshToken: string = this.Helpers.getToken('refresh_token');
 
         // Token endpoint & params.
@@ -197,34 +171,25 @@ export class AuthenticationService {
 
         return this.http.post(tokenEndpoint, body, this.options)
             .map((res: Response) => {
-
                 let body: any = res.json();
 
                 // Successful if there's an access token in the response.
                 if (typeof body.access_token !== 'undefined') {
-
                     // Stores access token & refresh token.
                     this.store(body);
-
                 }
-
             }).catch((error: any) => {
-
                 // Error on post request.
                 return Observable.throw(error);
-
             });
-
     }
     /**
      * Revokes token.
      */
     public revokeToken(): void {
-
         let token: string = this.Helpers.getToken('id_token');
 
         if (token != null) {
-
             // Revocation endpoint & params.
             let revocationEndpoint: string = Config.REVOCATION_ENDPOINT;
 
@@ -240,25 +205,19 @@ export class AuthenticationService {
             this.http.post(revocationEndpoint, body, this.options)
                 .subscribe(
                 () => {
-
                     this.Helpers.removeToken('id_token');
                     this.Helpers.removeExp();
-
                 });
-
         }
-
     }
 
     /**
      * Revokes refresh token.
      */
     public revokeRefreshToken(): void {
-
         let refreshToken: string = this.Helpers.getToken('refresh_token');
 
         if (refreshToken != null) {
-
             // Revocation endpoint & params.
             let revocationEndpoint: string = Config.REVOCATION_ENDPOINT;
 
@@ -274,20 +233,15 @@ export class AuthenticationService {
             this.http.post(revocationEndpoint, body, this.options)
                 .subscribe(
                 () => {
-
                     this.Helpers.removeToken('refresh_token');
-
                 });
-
         }
-
     }
 
     /**
      * Removes user and revokes tokens.
      */
     public signout(): void {
-
         this.redirectUrl = null;
 
         this.user = {};
@@ -298,7 +252,6 @@ export class AuthenticationService {
         // Revokes tokens.
         this.revokeToken();
         this.revokeRefreshToken();
-
     }
 
     /**
@@ -307,66 +260,53 @@ export class AuthenticationService {
      * @return The user's data
      */
     public getUser(): any {
-
         return this.user;
-
     }
 
     /**
      * Calls UserInfo endpoint to retrieve user's data.
      */
     public userInfo() {
-
         let token: string = this.Helpers.getToken('id_token');
 
         if (token != null && this.Helpers.tokenNotExpired()) {
             this.authHttp.get(Config.USERINFO_ENDPOINT)
                 .subscribe(
                 (res: any) => {
-
                     this.user = res.json();
-
                 },
                 (error: any) => {
-
                     console.log(error);
-
                 });
         }
-
     }
 
-//TODO: remove this
+    //TODO: remove this
     public fetchModel(): Observable<boolean> {
-  if(!this.Helpers.tokenNotExpired) {
-    return new Observable<false>()
-  }
-  else {
-    return new Observable<true>()
-  }
-}
+        if (!this.Helpers.tokenNotExpired) {
+            return new Observable<false>()
+        }
+        else {
+            return new Observable<true>()
+        }
+    }
 
-/*
+    /*
 
-   public getAm() {
+       public getAm() {
+            let token: string = Helpers.getToken('id_token');
 
-        let token: string = Helpers.getToken('id_token');
+            if (token != null && tokenNotExpired()) {
+         return Observable
+             .interval(5000)
+             .flatMap(() =>
+             this.authHttp.get('http://localhost:5000/api/identity/GetAmount')
 
-        if (token != null && tokenNotExpired()) {
-     return Observable
-         .interval(5000)
-         .flatMap(() => 
-         this.authHttp.get('http://localhost:5000/api/identity/GetAmount')
-         
-         );
+             );
+            }
         }
 
-    }
-
-
-*/
-
-
+    */
 
     /**
      * Encodes the parameters.
@@ -375,7 +315,6 @@ export class AuthenticationService {
      * @return The encoded parameters
      */
     private encodeParams(params: any): string {
-
         let body: string = "";
         for (let key in params) {
             if (body.length) {
@@ -394,7 +333,6 @@ export class AuthenticationService {
      * @param body The response of the request to the token endpoint
      */
     private store(body: any): void {
-
         // Stores access token to keep user signed in.
         this.Helpers.setToken('id_token', body.access_token);
         // Stores refresh token.
@@ -404,16 +342,10 @@ export class AuthenticationService {
         this.expiresIn = <number>body.expires_in * 1000; // To milliseconds.
         // Stores token expiration.
         this.Helpers.setExp(this.authTime + this.expiresIn);
-
     }
-
 }
 
 /**
  * Checks for presence of token and that token hasn't expired.
  * For use with the @CanActivate router decorator and NgIf.
  */
-
-
-
-

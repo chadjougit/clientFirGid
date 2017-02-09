@@ -27,10 +27,7 @@ import { CustomValidators } from 'ng2-validation';
     styleUrls: ['./app.component.css']
 })
 
-
-
 export class AppComponent {
-
     complexForm: FormGroup;
     primengMsgs: Message[] = [];
 
@@ -41,37 +38,31 @@ export class AppComponent {
 
     constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router,
         public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public Helpers: Helpers, private differs: KeyValueDiffers) {
+        //Log.setProductionMode();
+        const log = Log.create('books');
 
- //Log.setProductionMode();
-  const log = Log.create('books'); 
- 
-  log.er('test error log'); // console.log
-
+        log.er('test error log'); // console.log
 
         this.connection = new Connection("ws://localhost:5000/test");
         this.connection.enableLogging = true;
 
         this.connection.connectionMethods.onConnected = () => {
-
             console.log("You are now connected! Connection ID: " + this.connection.connectionId);
 
             console.log("let's invoke getcurrentuserdata");
             this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => {
                 console.log("GetCurrentUserData " + data);
 
-
-
-               //TODO: this "data" with double quotes. It's produce an error while parsing. Need to fix
-               //quickfix 
-               //data = data.replace(/^"(.*)"$/, '$1'); 
-               //
+                //TODO: this "data" with double quotes. It's produce an error while parsing. Need to fix
+                //quickfix
+                //data = data.replace(/^"(.*)"$/, '$1');
+                //
                 let parsedata = JSON.parse(data);
-              //this.parsedata = data;
-
+                //this.parsedata = data;
 
                 //добавляем полученные данные в стор
-             this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
-                                this.store.dispatch(new UpdateAmount(parsedata.UserPw));
+                this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
+                this.store.dispatch(new UpdateAmount(parsedata.UserPw));
                 console.log(this.parsedata);
             });
         }
@@ -85,10 +76,8 @@ export class AppComponent {
         this.connection.clientMethods["receiveMessage"] = (socketId, message) => {
             var messageText = socketId + " said: " + message;
 
-
             //TODO:поменять мэссэдж
             if (socketId == "new transaction alert") {
-
                 console.log("let's invoke getcurrentuserdata");
                 this.identity.GetCurrentUserData(this.connection.connectionId).subscribe((data) => {
                     console.log("GetCurrentUserData " + data);
@@ -110,7 +99,7 @@ export class AppComponent {
 
         Helpers.tokenSubject.subscribe((value) => {
             console.log("Subscription got", value);
-             log.er('Subscription got'); // console.log
+            log.er('Subscription got'); // console.log
 
             if (value == true) {
                 this.connection.start().subscribe((connectionvalue) => {
@@ -137,19 +126,17 @@ export class AppComponent {
         // Optional strategy for refresh token through a scheduler.
         this.authenticationService.startupTokenRefresh();
 
-
         this.complexForm = fb.group({
             'login': ["", [Validators.required, CustomValidators.email]],
             'password': ["", [Validators.required, Validators.minLength(6)]],
         })
     }
- 
 
-    loginSubmitCLick() {}  
+    loginSubmitCLick() { }
 
     loginSubmitCLick$: Observable<any> = new Subject().map((value: any) => {
         console.log('loginSubmitCLick pressed');
-       // this.login();
+        // this.login();
     });
 
     subscription: any = this.loginSubmitCLick$.subscribe(
@@ -162,15 +149,13 @@ export class AppComponent {
         // this.Signin.signin(this.complexForm.value.login, this.complexForm.value.password)
 
         //this.authenticationService.signin(this.complexForm.value.login, this.complexForm.value.password).subscribe(
-            this.authenticationService.signin(value.login, value.password).subscribe(
+        this.authenticationService.signin(value.login, value.password).subscribe(
             x => { this.SubmitButton.activate(); this.authenticationService.scheduleRefresh(); },
-            e => {this.SubmitButton.activate();
-            this.show("error", "error", "username or password is invalid");
-        }
-            );
-
-
-
+            e => {
+                this.SubmitButton.activate();
+                this.show("error", "error", "username or password is invalid");
+            }
+        );
 
         //очищаем логин и пароль на форме после входа, чтоб не было видно при выходе
         this.complexForm.controls['login'].setValue("");
@@ -182,7 +167,6 @@ export class AppComponent {
         this.router.navigate(["Home"]);
     }
 
-
     //проперти, которое показывает зашли мы или нет. используется в html, очень удобно
     get signedIn(): boolean {
         return this.Helpers.tokenNotExpired();
@@ -191,15 +175,11 @@ export class AppComponent {
     show(severity: string, summary: string, detail: string) {
         this.primengMsgs = [];
         this.primengMsgs.push({ severity: severity, summary: summary, detail: detail });
-      //   this.primengMsgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
-         //   this.primengMsgs.push({severity:'info', summary:'Message 1', detail:'PrimeNG rocks'});
+        //   this.primengMsgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
+        //   this.primengMsgs.push({severity:'info', summary:'Message 1', detail:'PrimeNG rocks'});
     }
 
     hide() {
         this.primengMsgs = [];
     }
-
 }
-
-
-
