@@ -150,26 +150,13 @@ export class TransactionComponent implements OnInit {
                     .subscribe(
                     (res: any) => {
                         // IdentityResult.
-                        this.SubmitButton.activate()
-                        this.show("success", "Success Message", "sucess transaction");
-                        this.identity.GetCurrentUserData().subscribe((data) => {
-                            console.log("GetCurrentUserData " + data);
-
-                            let parsedata = JSON.parse(data);
+                         let parsedata = JSON.parse(res);
 
                             //добавляем полученные данные в стор
                             this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
                             this.store.dispatch(new UpdateAmount(parsedata.UserPw));
-                        }, (error: any) => {
-                            if (error.status < 400 || error.status === 500) {
-                                this.log.er(error);
-                                this.log.er(error.json());// console.log
-                                console.log("internal error in GetCurrentUserData");
-                                console.warn("internal error in GetCurrentUserData");
-                                console.info(error);
-                                console.error(error.json());
-                            }
-                        });
+                        this.SubmitButton.activate()
+                        this.show("success", "Success Message", "sucess transaction");
                     },
                     (error: any) => {
                         if (error.status == 400) {
