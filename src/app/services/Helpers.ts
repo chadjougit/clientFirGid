@@ -53,8 +53,7 @@ export class Helpers {
      */
     public setToken(name: string, value: string) {
         localStorage.setItem(name, value);
-        //this._collectionObserver.next("true");
-        console.log(this.tokenSubject.value + "tokenSubject!!");
+        
         if (!this.tokenSubject.value)
         { this.tokenSubject.next(true); }
     }

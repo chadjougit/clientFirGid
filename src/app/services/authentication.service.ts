@@ -134,7 +134,7 @@ export class AuthenticationService {
                     () => {
                         this.scheduleRefresh();
                     },
-                    (error: any) => { console.log(error); }
+                    (error: any) => { console.error(error); }
                 );
             });
         }
@@ -291,22 +291,6 @@ export class AuthenticationService {
         }
     }
 
-    /*
-
-       public getAm() {
-            let token: string = Helpers.getToken('id_token');
-
-            if (token != null && tokenNotExpired()) {
-         return Observable
-             .interval(5000)
-             .flatMap(() =>
-             this.authHttp.get('http://localhost:5000/api/identity/GetAmount')
-
-             );
-            }
-        }
-
-    */
 
     /**
      * Encodes the parameters.

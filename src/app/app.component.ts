@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { State, UpdateHistory, UpdateAmount, ToDefault } from './reducers/reducers';
 import { Helpers } from './services/Helpers';
 import { Connection } from './websocket/Connection';
-import { SubmitButton } from './shared/SubmitButton';
+import { SubmitButton } from './shared/submitButton';
 
 import { Message, GrowlModule } from 'primeng/primeng';
 
@@ -41,7 +41,7 @@ export class AppComponent {
         //Log.setProductionMode();
         const log = Log.create('books');
 
-        log.er('test error log'); // console.log
+       
 
         this.connection = new Connection("ws://localhost:5000/test");
         this.connection.enableLogging = true;

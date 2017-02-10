@@ -63,8 +63,7 @@ export class HistoryComponent implements OnInit {
     GetTransactionsFromReducer() {
         this.userData.subscribe(
             data => {
-                // Set the products Array
-                //this.userData.transactions = data.transactions;
+  
 
                 /*
                 var testtt = data.transactions;
@@ -73,11 +72,12 @@ export class HistoryComponent implements OnInit {
                 let object2 = Object.freeze(Object.assign({}, data));
                 let object3 = Object.freeze(Object.assign({}, data.transaction));
                 var newObject = Object.assign(Object.create(data), data);
-                const clone = JSON.parse(JSON.stringify(data));
                 */
 
+
+                // Simple clone making changes in ngrx/store.
                 // it's a little dumb, but this helps for deep clone. All stuff above not working.
-                // Simple clone just making changes in ngrx/store.
+                
                 //TODO: check for another realization.
                 this.userDataCopied = JSON.parse(JSON.stringify(data));
 
@@ -95,18 +95,6 @@ export class HistoryComponent implements OnInit {
                         return (Date.parse(b.Date) - Date.parse(a.Date)) || 0;
                     });
                 }
-
-                //this.userDataCopied2 =  this.userDataCopied.transactions.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-
-                /*
-
-                 this.userDataCopied2 = this.userDataCopied2.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-                this.userDataCopied2 = this.userDataCopied2.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-                               this.userDataCopied.transactions.map(somedata => { somedata.Date = new Date(Date.parse(somedata.Date)); return somedata })
-                this.userDataCopied.transactions.sort((task1, task2) => {task2.Date   - task1.Date});
-                */
-
-                console.log("test");
             })
     }
 }

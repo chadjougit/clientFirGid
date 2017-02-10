@@ -54,10 +54,6 @@ import { AuthHttp } from 'angular2-jwt';
     public Create(model: any): Observable<any> {
         let body: string = JSON.stringify(model);
 
-        console.log("body");
-        console.log(body);
-        console.log("body2");
-
         return this.http.post("http://localhost:5000/api/identity/Create", body, this.options)
             .map((res: Response) => {
                 return res.json();

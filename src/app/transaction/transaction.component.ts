@@ -13,7 +13,7 @@ import { State, UpdateHistory, UpdateAmount } from '../reducers/reducers';
 import 'rxjs/add/operator/take'
 
 import { Message, GrowlModule } from 'primeng/primeng';
-import { SubmitButton } from '../shared/SubmitButton';
+import { SubmitButton } from '../shared/submitButton';
 import { Log, Level } from 'ng2-logger/ng2-logger';
 
 @Component({
@@ -41,21 +41,20 @@ export class TransactionComponent implements OnInit {
 
     // userData: Observable<any>;
     userData: any;
-    testUserData: any;
     log = Log.create('transactions');
     SubmitButton = new SubmitButton("Submit");
 
     constructor(fb: FormBuilder, public identity: IdentityService, private store: Store<State>) {
         this.GetAllUsers();
 
+        // livesearch
         this.dataSource = Observable.create((observer: any) => {
             // Runs on every search
             observer.next(this.asyncSelected);
         }).mergeMap((token: string) => this.getusersAsObservable(token));
 
         this.userData = this.store.select("UserDataReducer");
-
-          this.userData.subscribe(
+        this.userData.subscribe(
             data => {
                 // Set the products Array
                 this.userData.amount = data.amount;
@@ -70,29 +69,17 @@ export class TransactionComponent implements OnInit {
 
     users: any;
 
-    showdel() {
-        this.primengMsgs.push({ severity: 'success', summary: 'Success Message', detail: 'sucess transaction' });
-    }
 
+
+    /**
+    * show method for primeng
+    */
     show(severity: string, summary: string, detail: string) {
         this.primengMsgs = [];
         this.primengMsgs.push({ severity: severity, summary: summary, detail: detail });
-        //   this.primengMsgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
-        //   this.primengMsgs.push({severity:'info', summary:'Message 1', detail:'PrimeNG rocks'});
     }
 
-    hide() {
-        this.primengMsgs = [];
-    }
-
-    Test() {
-console.log(this.userData);
-console.log(this.userData.amount);
-
-    }
-
-
-
+    //regon ng2-bootstrap livesearch
     public getusersAsObservable(token: string): Observable<any> {
         let query = new RegExp(token, 'ig');
 
@@ -116,6 +103,9 @@ console.log(this.userData.amount);
         console.log(this.asyncSelected);
         console.log(this.asyncAmount);
     }
+
+    //endregon ng2-bootstrap livesearch
+
 
     /**
      *Method that gets all users from server.
@@ -151,37 +141,38 @@ console.log(this.userData.amount);
     */
     SendTransactionToUser(username: string, summ: number) {
         this.userData.take(1).subscribe(content => {
-                this.SubmitButton.deactivate();
-                this.identity.SendTransactionToUser(username, summ)
-                    .subscribe(
-                    (res: any) => {
-                        // IdentityResult.
-                         let parsedata = JSON.parse(res);
+            this.SubmitButton.deactivate();
+            this.identity.SendTransactionToUser(username, summ)
+                .subscribe(
+                (res: any) => {
+                    // IdentityResult.
+                    let parsedata = JSON.parse(res);
 
-                            //добавляем полученные данные в стор
-                            this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
-                            this.store.dispatch(new UpdateAmount(parsedata.UserPw));
-                        this.SubmitButton.activate()
-                        this.show("success", "Success Message", "sucess transaction");
-                    },
-                    (error: any) => {
-                        if (error.status == 400) {
-                            this.show("error", "invalid data", "please verify input fields!");
-                            console.warn(error)
-                        }
-                        else {
-                            this.show("error", "server error", "");
-                            console.error(error);
-                        }
-                        this.SubmitButton.activate()
-                    });
-            
+                    //sendng recived data to ngrx/store
+                    this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
+                    this.store.dispatch(new UpdateAmount(parsedata.UserPw));
+                    this.SubmitButton.activate()
+                    this.show("success", "Success Message", "sucess transaction");
+                },
+                (error: any) => {
+                    if (error.status == 400) {
+                        this.show("error", "invalid data", "please verify input fields!");
+                        console.warn(error)
+                    }
+                    else {
+                        this.show("error", "server error", "");
+                        console.error(error);
+                    }
+                    this.SubmitButton.activate()
+                });
+
         });
     }
 
-   
+
 
     ngOnInit() {
+        // ngrx/store data to form's controls 
         this.userData.take(1).subscribe(content => {
             console.log(content);
 

@@ -35,7 +35,6 @@ this.userData = store.select("UserDataReducer");
 
                 // Optional strategy for refresh token through a scheduler.
                 this.authenticationService.scheduleRefresh();
-                console.log("signin dooone");
             },
             (error: any) => {
 

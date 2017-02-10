@@ -13,6 +13,8 @@ import { Subject } from 'rxjs/Subject';
 import { SigninService } from '../services/signin.service';
 import { IdentityService } from '../services/identity.service';
 import { CustomValidators } from 'ng2-validation';
+import { SubmitButton } from '../shared/submitButton';
+import { AuthenticationService } from '../services/authentication.service';
 
 export function matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
     return (group: FormGroup): {
@@ -37,9 +39,9 @@ export function matchingPasswords(passwordKey: string, confirmPasswordKey: strin
 export class SignupComponent implements OnInit {
     userName: string = null;
     complexForm: FormGroup;
-    testing: string;
+    SubmitButton = new SubmitButton("Submit");
 
-    constructor(fb: FormBuilder, private Signin: SigninService, private router: Router, public identity: IdentityService) {
+    constructor(public authenticationService: AuthenticationService, fb: FormBuilder, private Signin: SigninService, private router: Router, public identity: IdentityService) {
         this.complexForm = fb.group({
             // To add a validator, we must first convert the string value into an array.
             //The first item in the array is the default value if any, then the next item in the array is the validator. Here we are adding a required validator meaning that the firstName attribute must have a value in it.
@@ -57,20 +59,30 @@ export class SignupComponent implements OnInit {
     }
 
     signup(): void {
-        console.log(this.complexForm.value);
-
+        this.SubmitButton.deactivate();
         this.identity.Create(this.complexForm.value)
             .subscribe(
             (res: any) => {
                 // IdentityResult.
                 if (res.succeeded) {
-                    // Signs in the user.
-                    // this.signin();
+                 
+                    this.authenticationService.signin(this.complexForm.value.username, this.complexForm.value.password).subscribe(
+                        x => { this.SubmitButton.activate(); this.authenticationService.scheduleRefresh();  this.router.navigate(["Home"]); },
+                        e => {
+                            this.SubmitButton.activate();
+                           
+                        }
+                    );
 
-                    console.log("registration done");
+
+
+
+
+                
                 } else {
                     console.log("registration notdone");
                     this.userName = "username is already exist";
+                    this.SubmitButton.activate();
                     //  this.errorMessages = res.errors;
                 }
             },
