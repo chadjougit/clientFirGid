@@ -41,6 +41,7 @@ export class TransactionComponent implements OnInit {
 
     // userData: Observable<any>;
     userData: any;
+    testUserData: any;
     log = Log.create('transactions');
     SubmitButton = new SubmitButton("Submit");
 
@@ -54,9 +55,16 @@ export class TransactionComponent implements OnInit {
 
         this.userData = this.store.select("UserDataReducer");
 
+          this.userData.subscribe(
+            data => {
+                // Set the products Array
+                this.userData.amount = data.amount;
+            })
+
+
         this.complexForm = fb.group({
             'recipient': ["", [Validators.required, CustomValidators.email]],
-            'Amount': ["100", [Validators.required, CustomValidators.number, CustomValidators.min(1)]],
+            'Amount': ["100", [Validators.required, CustomValidators.number, CustomValidators.min(1), CustomValidators.max(this.userData.amount)]]
         })
     }
 
@@ -76,6 +84,14 @@ export class TransactionComponent implements OnInit {
     hide() {
         this.primengMsgs = [];
     }
+
+    Test() {
+console.log(this.userData);
+console.log(this.userData.amount);
+
+    }
+
+
 
     public getusersAsObservable(token: string): Observable<any> {
         let query = new RegExp(token, 'ig');
@@ -135,16 +151,6 @@ export class TransactionComponent implements OnInit {
     */
     SendTransactionToUser(username: string, summ: number) {
         this.userData.take(1).subscribe(content => {
-            if (content.amount - this.userData.amount <= 0) {
-                console.log("маааало");
-                alert("need more");
-            }
-
-            else if (this.userData.amount <= 0)
-            { alert("wrong summ!"); }
-
-            else {
-                console.log("ноооорм");
                 this.SubmitButton.deactivate();
                 this.identity.SendTransactionToUser(username, summ)
                     .subscribe(
@@ -169,7 +175,7 @@ export class TransactionComponent implements OnInit {
                         }
                         this.SubmitButton.activate()
                     });
-            }
+            
         });
     }
 

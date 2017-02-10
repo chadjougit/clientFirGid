@@ -6,6 +6,7 @@
         <div *ngIf="complexForm.controls['recipient'].hasError('email') && complexForm.controls['recipient'].touched" class="alert alert-danger">please write valid email</div>
         <input class="form-control" placeholder="Amount" type="text" [formControl]="complexForm.controls['Amount']">
         <div *ngIf="complexForm.controls['Amount'].hasError('number') && complexForm.controls['Amount'].touched" class="alert alert-danger">please write number</div>
+        <div *ngIf="(complexForm.controls['Amount'].hasError('min') || complexForm.controls['Amount'].hasError('max'))  && complexForm.controls['Amount'].touched" class="alert alert-danger">Please make sure the transaction amount does not exceed your personal amount limit and transaction not lower than 1</div>
         <button class="btn btn-primary center-block" [disabled]="!this.SubmitButton.isActive || !complexForm.valid" type="submit">{{this.SubmitButton.innerText}}</button>
     </form>
   </div>
