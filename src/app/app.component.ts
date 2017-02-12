@@ -20,7 +20,7 @@ import { Message, GrowlModule } from 'primeng/primeng';
 import { Log, Level } from 'ng2-logger/ng2-logger';
 import { CustomValidators } from 'ng2-validation';
 
-//ALPHA 1.04
+//ALPHA 1.05
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
