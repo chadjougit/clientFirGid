@@ -17,7 +17,7 @@ export interface Transaction {
 
 interface newtransaction {
     Id: number;
-    amount: number;
+    Amount: number;
     SenderUsername: string;
     RecipientUsername: string;
     Date: Date;
@@ -85,7 +85,7 @@ export class HistoryComponent implements OnInit {
 
                 if (this.userDataCopied.transactions != null) {
                     for (let entry of this.userDataCopied.transactions) {
-                        let newtrans = { Id: entry.Id, amount: entry.Amount, SenderUsername: entry.SenderUsername, RecipientUsername: entry.RecipientUsername, Date: new Date(Date.parse(entry.Date)) };
+                        let newtrans = { Id: entry.Id, Amount: entry.Amount, SenderUsername: entry.SenderUsername, RecipientUsername: entry.RecipientUsername, Date: new Date(Date.parse(entry.Date)) };
 
                         this.simpleArray4userData.push(newtrans);
                     }

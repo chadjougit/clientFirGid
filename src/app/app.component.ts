@@ -61,8 +61,8 @@ export class AppComponent {
                 //this.parsedata = data;
 
                 //добавляем полученные данные в стор
-                this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
-                this.store.dispatch(new UpdateAmount(parsedata.UserPw));
+                this.store.dispatch(new UpdateHistory(parsedata.Transactions));
+                this.store.dispatch(new UpdateAmount(parsedata.Amount));
                 console.log(this.parsedata);
             });
         }
@@ -84,8 +84,8 @@ export class AppComponent {
 
                     let parsedata = JSON.parse(data);
 
-                    this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
-                    this.store.dispatch(new UpdateAmount(parsedata.UserPw));
+                    this.store.dispatch(new UpdateHistory(parsedata.Transactions));
+                    this.store.dispatch(new UpdateAmount(parsedata.Amount));
                     this.show("success", "success!", "new transaction was recivied")
 
                     console.log(this.parsedata);
@@ -119,7 +119,7 @@ export class AppComponent {
         this.userData.subscribe(
             data => {
                 // Set the products Array
-                this.userData.amount = data.amount;
+                this.userData.Amount = data.Amount;
                 this.userData.websocketId = data.websocketId;
             })
 

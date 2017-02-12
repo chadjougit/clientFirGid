@@ -27,7 +27,7 @@
           <div [hidden]="!trans"> {{trans?.Id}} </div>
         </td>
         <td>
-          <div [hidden]="!trans"> {{trans?.amount}} </div>
+          <div [hidden]="!trans"> {{trans?.Amount}} </div>
         </td>
         <td>
           <div [hidden]="!trans"> {{trans?.SenderUsername}} </div>
@@ -39,7 +39,7 @@
           <div [hidden]="!trans"> {{trans?.Date | date:'medium' }} </div>
         </td>
         <td>
-          <div *ngIf="trans.amount < 0"> <button (click)="SendTransactionId(trans.Id)" class="btn btn-primary">Copy this transaction</button> </div>
+          <div *ngIf="trans.Amount < 0"> <button (click)="SendTransactionId(trans.Id)" class="btn btn-primary">Copy this transaction</button> </div>
         </td>
       </tr>
     </tbody>

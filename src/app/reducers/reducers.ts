@@ -49,32 +49,32 @@ export type Actions
 
 interface transaction {
     Id: number;
-    amount: number;
+    Amount: number;
     SenderUsername: string;
     RecipientUsername: string;
     Date: string;
 }
 
 export interface State {
-    amount: number;
+    Amount: number;
     transactions: transaction[];
     newTranscation: transaction;
     websocketId: string;
 }
 
 const initialState: State = {
-    amount: null,
+    Amount: null,
     transactions: null,
     websocketId: null,
-    newTranscation: { Id: 0, amount: 0, SenderUsername: "", RecipientUsername: "", Date: "date" }
+    newTranscation: { Id: 0, Amount: 0, SenderUsername: "", RecipientUsername: "", Date: "date" }
 };
 
 export function UserDataReducer(state: State = initialState, action: Actions) {
     switch (action.type) {
         case ActionTypes.UpdateAmount: {
-            var amount2 = action.payload;
+            var Amount2 = action.payload;
 
-            return Object.assign({}, state, { amount: amount2 });
+            return Object.assign({}, state, { Amount: Amount2 });
         }
 
         case ActionTypes.UpdateHistory: {

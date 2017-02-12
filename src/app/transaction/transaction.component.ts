@@ -25,6 +25,8 @@ import { Log, Level } from 'ng2-logger/ng2-logger';
 export class TransactionComponent implements OnInit {
     primengMsgs: Message[] = [];
 
+    users: any;
+
     complexForm: FormGroup;
     public stateCtrl: FormControl = new FormControl();
 
@@ -57,17 +59,17 @@ export class TransactionComponent implements OnInit {
         this.userData.subscribe(
             data => {
                 // Set the products Array
-                this.userData.amount = data.amount;
+                this.userData.Amount = data.Amount;
             })
 
 
         this.complexForm = fb.group({
             'recipient': ["", [Validators.required, CustomValidators.email]],
-            'Amount': ["100", [Validators.required, CustomValidators.number, CustomValidators.min(1), CustomValidators.max(this.userData.amount)]]
+            'Amount': ["100", [Validators.required, CustomValidators.number, CustomValidators.min(1), CustomValidators.max(this.userData.Amount)]]
         })
     }
 
-    users: any;
+
 
 
 
@@ -149,8 +151,8 @@ export class TransactionComponent implements OnInit {
                     let parsedata = JSON.parse(res);
 
                     //sendng recived data to ngrx/store
-                    this.store.dispatch(new UpdateHistory(parsedata.UserTransactions));
-                    this.store.dispatch(new UpdateAmount(parsedata.UserPw));
+                    this.store.dispatch(new UpdateHistory(parsedata.Transactions));
+                    this.store.dispatch(new UpdateAmount(parsedata.Amount));
                     this.SubmitButton.activate()
                     this.show("success", "Success Message", "sucess transaction");
                 },

@@ -16,7 +16,7 @@ export class SigninService {
 
     errorMessage: string = "";
     userData: Observable<any>;
-     public amount:Observable<any>;
+     public Amount:Observable<any>;
 
      getAmountSubscriber : any;
 
