@@ -8,8 +8,12 @@ export class Config {
      * Token endpoint.
      * @see https://identityserver4.readthedocs.io/en/dev/endpoints/token.html
      */
+  
+      
 
      public static readonly SERVER_URL: string = "http://localhost:5000/";
+
+         public static readonly WEBSOCKET_URL: string = "ws://localhost:5000/test";
 
     public static readonly TOKEN_ENDPOINT: string = "http://localhost:5000/connect/token";
 

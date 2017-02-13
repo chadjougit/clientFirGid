@@ -6,6 +6,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { AuthHttp } from 'angular2-jwt';
+import { Config } from '../config';
 
 /**
  * Identity service (to Identity Web API controller).
@@ -23,7 +24,7 @@ import { AuthHttp } from 'angular2-jwt';
     public GetCurrentUserData(Websocketid?: string): Observable<any> {
         let body: any = JSON.stringify(Websocketid);
         // Sends an authenticated request.
-        return this.authHttp.post("http://localhost:5000/api/identity/GetCurrentUserData", body, this.options)
+        return this.authHttp.post(Config.SERVER_URL + "api/identity/GetCurrentUserData", body, this.options)
             .map((res: Response) => {
                 return res.json();
             })
@@ -35,7 +36,7 @@ import { AuthHttp } from 'angular2-jwt';
 
     public GetAllUsers(): Observable<any> {
         // Sends an authenticated request.
-        return this.authHttp.get("http://localhost:5000/api/identity/GetAllUsers")
+        return this.authHttp.get(Config.SERVER_URL + "api/identity/GetAllUsers")
             .map((res: Response) => {
                 return res.json();
             })
@@ -54,7 +55,7 @@ import { AuthHttp } from 'angular2-jwt';
     public Create(model: any): Observable<any> {
         let body: string = JSON.stringify(model);
 
-        return this.http.post("http://localhost:5000/api/identity/Create", body, this.options)
+        return this.http.post(Config.SERVER_URL + "api/identity/Create", body, this.options)
             .map((res: Response) => {
                 return res.json();
             })
@@ -96,7 +97,7 @@ import { AuthHttp } from 'angular2-jwt';
         let body: any = JSON.stringify(colors);
 
         // Sends an authenticated request.
-        return this.authHttp.post("http://localhost:5000/api/identity/SendTransactionToUser", body, this.options)
+        return this.authHttp.post(Config.SERVER_URL + "api/identity/SendTransactionToUser", body, this.options)
             .map((res: Response) => {
                 return res.json();
             })

@@ -19,6 +19,7 @@ import { Message, GrowlModule } from 'primeng/primeng';
 
 import { Log, Level } from 'ng2-logger/ng2-logger';
 import { CustomValidators } from 'ng2-validation';
+import { Config } from './config';
 
 //ALPHA 1.05
 @Component({
@@ -38,12 +39,12 @@ export class AppComponent {
 
     constructor(fb: FormBuilder, public authenticationService: AuthenticationService, private router: Router,
         public authHttp: AuthHttp, public Signin: SigninService, public identity: IdentityService, private store: Store<State>, public Helpers: Helpers, private differs: KeyValueDiffers) {
-        //Log.setProductionMode();
-        const log = Log.create('books');
+        Log.setProductionMode();
+        const log = Log.create('app.component');
 
        
 
-        this.connection = new Connection("ws://localhost:5000/test");
+        this.connection = new Connection(Config.WEBSOCKET_URL);
         this.connection.enableLogging = true;
 
         this.connection.connectionMethods.onConnected = () => {
