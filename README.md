@@ -18,8 +18,11 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## List of technologies
 websocket from https://github.com/chadjougit/websocket-manager (midified)
+
 IdentityServer4 from https://github.com/IdentityServer/IdentityServer4
+
 ngrx/store (Redux) from https://github.com/ngrx/store
+
 and others..
 
 ##Configuration
