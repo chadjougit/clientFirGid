@@ -1,5 +1,8 @@
 # PWappClient
 
+
+MOVED TO https://github.com/VladyslavKovalov/PWappClient
+
 Angular2/ASP.Net Core "money" transactions sample
 This sample shows how to connect Angular 2 and ASP.Net Core. This project uses identityServer4, ngrx/store, webSockets, EFcore, Bootstrap 3 and PrimeNg
 
